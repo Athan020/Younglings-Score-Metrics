@@ -14,9 +14,12 @@
                 <div [hidden]="mail.valid || mail.pristine" class="alert alert-danger mt-1">
                     Email is required
                 </div>
-                <input class="form-control mt-5" placeholder="Password" type="password" name="password" [(ngModel)]="password" #pass="ngModel" required/>
-                <div [hidden]="pass.valid || pass.pristine" class="alert alert-danger mt-1">
+                <input class="form-control mt-5" minlength="8" placeholder="Password" type="password" name="password" [(ngModel)]="password" #pass="ngModel" required/>
+                <div [hidden]="pass.value !== '' || pass.pristine" class="alert alert-danger mt-1">
                     Password is required
+                </div>
+                <div [hidden]="pass.pristine || pass.value.length >= 8" class="alert alert-danger mt-1">
+                    Password needs to be atleast 8 characters long
                 </div>
             </div>
             <label for="role" class="mt-4">Role:</label>

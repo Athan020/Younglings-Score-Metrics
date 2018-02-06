@@ -27,7 +27,11 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    this.authentication.signUp(this.email, this.password, this.name, this.role, this.team);
+    // if (this.password.length() >= 8) {
+      this.authentication.signUp(this.email, this.password, this.name, this.role, this.team);
+    // } else {
+    //   alert('Password needs to be atleast 8 characters long');
+    // }
   }
 
 }
