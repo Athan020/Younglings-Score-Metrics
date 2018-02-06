@@ -1,0 +1,9 @@
+.zippy {
+  border: 1px solid black; width: 50%;
+  border-radius: 0.25rem;
+}
+
+.zip-title {
+  font-size: 1.5rem;
+ 
+}
