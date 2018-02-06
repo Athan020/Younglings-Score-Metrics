@@ -17,7 +17,7 @@ export class DatabaseService {
             // tslint:disable-next-line:max-line-length
             this.afStore.firestore.collection('users').add({ 'user': uid, 'role': role, 'team': team, 'previous rating': 0, 'rating': 0, 'velocity': 0 });
         } else {
-            this.afStore.firestore.collection('users').add({ 'user': uid, 'role': role, 'previous rating': 0, 'rating': 0, 'velocity': 0 });
+            this.afStore.firestore.collection('users').add({ 'user': uid, 'role': role });
         }
     }
 

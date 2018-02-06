@@ -19,8 +19,8 @@
                     Password is required
                 </div>
             </div>
-            <select name="role" [(ngModel)]="role" #selectedRole="ngModel" class="form-control mt-5" required>
-              <option value=""></option>
+            <label for="role" class="mt-4">Role:</label>
+            <select name="role" [(ngModel)]="role" #selectedRole="ngModel" class="form-control mt-1" required>
               <option value="member">Team Member</option>
               <option value="leader">Team Leader</option>
               <option value="manager">Manager</option>
@@ -30,8 +30,8 @@
                 Please select a role
             </div>
             <div *ngIf="selectedRole.value === 'member' || selectedRole.value === 'po'">
-                <select name="team" [(ngModel)]="team" #selectedTeam="ngModel" class="form-control mt-5" required>
-                <option value=""></option>
+                <label for="team" class="mt-4">Teams:</label>
+                <select name="team" [(ngModel)]="team" #selectedTeam="ngModel" class="form-control mt-1" required>
                 <option *ngFor="let item of teamsList" value={{item}}>{{item}}</option>
               </select>
                 <div [hidden]="selectedTeam.value !== '' || selectedTeam.pristine" class="alert alert-danger mt-1">
