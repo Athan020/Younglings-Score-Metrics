@@ -1,3 +1,4 @@
+import { ReviewComponent } from './components/review/review.component';
 import { DatabaseService } from './services/database/database.service';
 import { AuthguardService } from './services/authguard/authguard.service';
 import { AppRoutingModule } from './app-routing.module';
@@ -6,8 +7,8 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
@@ -27,7 +28,8 @@ export const firebaseConfig = {
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ReviewComponent
   ],
   imports: [
     BrowserModule,

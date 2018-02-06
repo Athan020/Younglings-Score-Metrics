@@ -1,7 +1,7 @@
-import { DatabaseService } from './../services/database/database.service';
+import { DatabaseService } from './../../services/database/database.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from '../services/authentication/authentication.service';
+import { AuthenticationService } from './../../services/authentication/authentication.service';
 
 @Component({
   selector: 'app-register',
