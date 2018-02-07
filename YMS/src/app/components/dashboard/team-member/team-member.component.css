@@ -1,0 +1,53 @@
+background {
+    position: relative;
+    width: 1074px;
+    height: 760px;
+    background-color: #FFFFFF;
+}
+
+.title {
+    width: 1078px;
+    height: 86px;
+    margin-top: 30px;
+    background: #C4C4C4;
+}
+
+p {
+    width: 202px;
+    height: 48px;
+    left: 58px;
+    top: 136px;
+    font-family: Saira SemiCondensed;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: 24px;
+    color: #000000;
+}
+
+rating {
+    position: absolute;
+    width: 701px;
+    height: 120px;
+    left: 200px;
+    top: 200px;
+    background: #C4C4C4;
+    margin-bottom: 50px;
+    padding-right: 25px;
+}
+
+text {
+    position: absolute;
+    width: 117.29px;
+    height: 30.14px;
+    left: 200px;
+    top: 370px;
+    font-family: Saira SemiCondensed;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: 24px;
+    color: #000000;
+    margin-top: 10px;
+    margin-left: 40px;
+}
