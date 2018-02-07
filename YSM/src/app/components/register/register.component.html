@@ -1,0 +1,65 @@
+<div class="row justify-content-center m-0">
+    <div class="col-6">
+        <h1>LOGO</h1>
+    </div>
+    <div [hidden]="submitted" class="col-6 p-5">
+        <h1 class="text-center">Register</h1>
+        <form (ngSubmit)="onSubmit()" #registerForm='ngForm'>
+            <div *ngIf="!this.authentication.loggedInWithGoogle">
+                <input class="form-control mt-5" placeholder="Full name" type="text" name="fullName" [(ngModel)]="name" #fullName="ngModel" required/>
+                <div [hidden]="fullName.valid || fullName.pristine" class="alert alert-danger mt-1">
+                    Full name is required
+                </div>
+                <input class="form-control mt-5" placeholder="Email" email type="email" name="email" [(ngModel)]="email" #mail="ngModel" required/>
+                <div [hidden]="mail.valid || mail.pristine" class="alert alert-danger mt-1">
+                    Email is required
+                </div>
+                <input class="form-control mt-5" minlength="8" placeholder="Password" type="password" name="password" [(ngModel)]="password" #pass="ngModel" required/>
+                <div [hidden]="pass.value !== '' || pass.pristine" class="alert alert-danger mt-1">
+                    Password is required
+                </div>
+                <div [hidden]="pass.pristine || pass.value.length >= 8" class="alert alert-danger mt-1">
+                    Password needs to be atleast 8 characters long
+                </div>
+            </div>
+            <label for="role" class="mt-4">Role:</label>
+            <select name="role" [(ngModel)]="role" #selectedRole="ngModel" class="form-control mt-1" required>
+              <option value="member">Team Member</option>
+              <option value="leader">Team Leader</option>
+              <option value="manager">Manager</option>
+              <option value="po">Product Owner</option>
+            </select>
+            <div [hidden]="selectedRole.value !== '' || selectedRole.pristine" class="alert alert-danger mt-1">
+                Please select a role
+            </div>
+            <div *ngIf="selectedRole.value === 'member' || selectedRole.value === 'po'">
+                <label for="team" class="mt-4">Teams:</label>
+                <select name="team" [(ngModel)]="team" #selectedTeam="ngModel" class="form-control mt-1" required>
+                <option *ngFor="let item of teamsList" value={{item}}>{{item}}</option>
+              </select>
+                <div [hidden]="selectedTeam.value !== '' || selectedTeam.pristine" class="alert alert-danger mt-1">
+                    Please select a team
+                </div>
+            </div>
+            <div *ngIf="selectedRole.value === 'leader'">
+                <input class="form-control mt-5" placeholder="Team name" type="text" name="teamName" [(ngModel)]="team" #teamName="ngModel" required/>
+                <div [hidden]="teamName.valid || teamName.pristine" class="alert alert-danger mt-1">
+                    Team name is required
+                </div>
+            </div>
+            <div class="row m-0">
+                <div class="col-6 pr-3 pl-0 mt-5">
+                    <button class="btn btn-dark" type="submit" name="login" [disabled]="!registerForm.form.valid">Register</button>
+                </div>
+                <div class="col-6 pl-3 pr-0 mt-5">
+                    <button (click)="this.router.navigate(['/login'])" class="btn btn-dark">Login</button>
+                </div>
+            </div>
+        </form>
+        <h6 class="text-center mt-3" width="100%">Or</h6>
+        <button (click)="this.authentication.googlePopUp()" class="btn btn-dark mt-3">Sign Up with Google</button>
+    </div>
+    <div [hidden]="!submitted">
+        <img src="../../assets/Ripple-2s-200px.gif" alt="Loading...">
+    </div>
+</div>
