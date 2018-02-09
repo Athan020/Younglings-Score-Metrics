@@ -22,6 +22,7 @@ import { TeamMemberComponent } from './components/dashboard/team-member/team-mem
 import { TeamLeaderComponent } from './components/dashboard/team-leader/team-leader.component';
 import { ManagerComponent } from './components/dashboard/manager/manager.component';
 
+
 export const firebaseConfig = {
   apiKey: 'AIzaSyAMd8N_5k9klj1df29Lr_xihZKXYagcvbI',
   authDomain: 'younglings-score-metrics.firebaseapp.com',
@@ -51,9 +52,10 @@ export const firebaseConfig = {
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
+    AngularFireAuthModule,
     AngularFirestoreModule
   ],
-  providers: [AngularFireAuth, AuthguardService, AuthenticationService, DatabaseService],
+  providers: [AngularFireAuth, AuthguardService, AuthenticationService, DatabaseService], 
   bootstrap: [AppComponent]
 })
 export class AppModule { }
