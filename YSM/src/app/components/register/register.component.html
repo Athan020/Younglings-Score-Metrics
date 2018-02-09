@@ -32,16 +32,25 @@
             <div [hidden]="selectedRole.value !== '' || selectedRole.pristine" class="alert alert-danger mt-1">
                 Please select a role
             </div>
-            <div *ngIf="selectedRole.value === 'member' || selectedRole.value === 'po'">
+            <div *ngIf="selectedRole.value === 'leader'">
+                <label for="newOrExisting" class="mt-5">New team or existing team:</label>
+                <br>
+                <input type="radio" id="new" class="ml-2" name="newOrExisting" (click)="setNewTeam(true)" checked>
+                <label for="new" class="team mt-2 ml-1">New team</label>
+                <br>
+                <input type="radio" id="existing" class="ml-2" name="newOrExisting" (click)="setNewTeam(false)">
+                <label for="existing" class="team mt-2 ml-1">Existing team</label>
+            </div>
+            <div *ngIf="selectedRole.value === 'member' || selectedRole.value === 'po' || (!newTeam && !pristine)">
                 <label for="team" class="mt-4">Teams:</label>
                 <select name="team" [(ngModel)]="team" #selectedTeam="ngModel" class="form-control mt-1" required>
-                <option *ngFor="let item of teamsList" value={{item}}>{{item}}</option>
+                    <option *ngFor="let item of this.db.teams | async" value={{item.name}}>{{item.name}}</option>
               </select>
                 <div [hidden]="selectedTeam.value !== '' || selectedTeam.pristine" class="alert alert-danger mt-1">
                     Please select a team
                 </div>
             </div>
-            <div *ngIf="selectedRole.value === 'leader'">
+            <div *ngIf="selectedRole.value === 'leader' && newTeam">
                 <input class="form-control mt-5" placeholder="Team name" type="text" name="teamName" [(ngModel)]="team" #teamName="ngModel" required/>
                 <div [hidden]="teamName.valid || teamName.pristine" class="alert alert-danger mt-1">
                     Team name is required

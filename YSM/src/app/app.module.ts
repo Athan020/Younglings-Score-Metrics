@@ -1,3 +1,4 @@
+import { LeaderboardComponent } from './components/leaderboard/leaderboard.component';
 import { ReviewComponent } from './components/review/review.component';
 import { DatabaseService } from './services/database/database.service';
 import { AuthguardService } from './services/authguard/authguard.service';
@@ -10,10 +11,11 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireAuth } from 'angularfire2/Auth/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AuthenticationService } from './services/authentication/authentication.service';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreModule } from 'angularfire2/firestore';
 import { ZippyComponent } from './components/zippy/zippy.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { TeamMemberComponent } from './components/dashboard/team-member/team-member.component';
@@ -39,16 +41,19 @@ export const firebaseConfig = {
     DashboardComponent,
     TeamMemberComponent,
     TeamLeaderComponent,
-    ManagerComponent
+    ManagerComponent,
+    LeaderboardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireAuthModule,
     AngularFireDatabaseModule,
+    AngularFirestoreModule
   ],
-  providers: [AngularFireAuth, AuthguardService, AuthenticationService, AngularFirestore, DatabaseService],
+  providers: [AngularFireAuth, AuthguardService, AuthenticationService, DatabaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
