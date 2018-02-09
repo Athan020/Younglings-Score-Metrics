@@ -10,15 +10,16 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AuthenticationService } from './services/authentication/authentication.service';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreModule } from 'angularfire2/firestore';
 import { ZippyComponent } from './components/zippy/zippy.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { TeamMemberComponent } from './components/dashboard/team-member/team-member.component';
 import { TeamLeaderComponent } from './components/dashboard/team-leader/team-leader.component';
 import { ManagerComponent } from './components/dashboard/manager/manager.component';
+import { AngularFireAuth } from 'angularfire2/Auth/auth';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyAMd8N_5k9klj1df29Lr_xihZKXYagcvbI',
@@ -47,8 +48,10 @@ export const firebaseConfig = {
     FormsModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
+    AngularFireAuthModule,
+    AngularFirestoreModule
   ],
-  providers: [AngularFireAuth, AuthguardService, AuthenticationService, AngularFirestore, DatabaseService],
+  providers: [AngularFireAuth, AuthguardService, AuthenticationService, DatabaseService], 
   bootstrap: [AppComponent]
 })
 export class AppModule { }

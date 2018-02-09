@@ -10,6 +10,8 @@ export class DatabaseService {
 
     constructor(private afStore: AngularFirestore) {
         this.users = afStore.collection('users').valueChanges();
+        
+        
     }
 
     createNewUser(uid, role, team) {
