@@ -7,6 +7,7 @@ export class DatabaseService {
 
     users: Observable<any>;
     teams = [];
+    questions= [];
 
     constructor(private afStore: AngularFirestore) {
         this.users = afStore.collection('users').valueChanges();

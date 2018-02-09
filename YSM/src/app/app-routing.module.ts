@@ -6,10 +6,11 @@ import { AuthguardService } from './services/authguard/authguard.service';
 import { RegisterComponent } from './components/register/register.component';
 
 const routes: Routes = [
-    { path: '', redirectTo: '/dashboard', pathMatch: 'full', canActivate: [AuthguardService]},
+    // { path: '', redirectTo: '/dashboard', pathMatch: 'full', canActivate: [AuthguardService]},
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
-    { path: 'review', component: ReviewComponent, canActivate: [AuthguardService] }
+    { path: 'review', component: ReviewComponent }
+
 ];
 
 @NgModule({

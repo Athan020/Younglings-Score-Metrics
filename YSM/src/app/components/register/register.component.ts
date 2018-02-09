@@ -1,3 +1,4 @@
+import { ReviewComponent } from '../review/review.component';
 import { DatabaseService } from './../../services/database/database.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
@@ -32,6 +33,11 @@ export class RegisterComponent implements OnInit {
     // } else {
     //   alert('Password needs to be atleast 8 characters long');
     // }
+
+
   }
+
+
+
 
 }
