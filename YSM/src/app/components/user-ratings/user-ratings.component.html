@@ -1,13 +1,13 @@
-<div *ngIf="userData.role == 'leader' || userData.role == 'member'" class="row justify-content-center m-0 border p-2">
+<div *ngIf="userData.role == 'leader' || userData.role == 'member'" class="row justify-content-center m-0 border p-2 bg-dark text-light">
     <h4 class="col-12">{{userData.name}}</h4>
     <div class="col-md-6">
-        Average: {{userData.rating/userData.totalSprints}}
+        Average: {{average}}
     </div>
     <div class="col-md-6">
         Previous rating: {{userData.previousRating}}
     </div>
 </div>
-<div *ngIf="userData.role == 'po'" class="row justify-content-center m-0 border p-2">
+<div *ngIf="userData.role == 'po'" class="row justify-content-center m-0 border p-2 bg-dark text-light">
     <h4 class="col-12">{{userData.name}}</h4>
     <div class="col-12">
         Average happiness: {{db.poAverageHappiness}}
