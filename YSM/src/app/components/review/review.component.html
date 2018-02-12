@@ -1,34 +1,37 @@
 <div class="container">
     <div class="row">
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
-            <div class="questionair">
-                <div class="row">
-                    <div class="col-md-6">
-                        <label class="labels">comment on review:</label>
-                    </div>
-                    <div class="col-md-6">
-                        <input class="form-control form-control-lg" type="textarea" placeholder="comment on review">
-                    </div>
-                </div>
+        <div class="col-md-2"></div>
+
+        <div class="col-md-8">
+            <div class="questionnaire">
+
                 <br>
                 <div class="row">
                     <div class="col-md-6">
                         <label class="labels">rating of team (1-5):</label>
                     </div>
                     <div class="col-md-6">
-
-                        <input class="form-control form-control-lg" type="number" value="1" min="0" max="5">
+                        <fieldset class="rating">
+                            <ng-container *ngFor="let x of [5,4,3,2,1]">
+                                <input [(ngModel)]='teamRating' type="radio" [id]="'star' + (x)" name="star" [value]="x" />
+                                <label class="full" [for]="'star' + (x)"></label>
+                            </ng-container>
+                        </fieldset>
                     </div>
                 </div>
                 <br>
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="labels">rate prsentation of team (1-5):</label>
+                        <label class="labels">rate presentation of team (1-5):</label>
                     </div>
                     <div class="col-md-6">
 
-                        <input class="form-control form-control-lg" type="number" value="1" min="0" max="5">
+                        <fieldset class="rating">
+                            <ng-container *ngFor="let y of [5,4,3,2,1]">
+                                <input [(ngModel)]='presentation' type="radio" [id]="'present' + (y)" name="present" [value]="y" />
+                                <label class="full" [for]="'present' + (y)"></label>
+                            </ng-container>
+                        </fieldset>
 
                     </div>
                 </div>
@@ -38,7 +41,12 @@
                         <label class="labels">rate work of team (1-5):</label>
                     </div>
                     <div class="col-md-6">
-                        <input class="form-control form-control-lg" type="number" value="1" min="0" max="5">
+                        <fieldset class="rating">
+                            <ng-container *ngFor="let z of [5,4,3,2,1]">
+                                <input [(ngModel)]='rateWork' type="radio" [id]="'work' + (z)" name="work" [value]="z" />
+                                <label class="full" [for]="'work' + (z)"></label>
+                            </ng-container>
+                        </fieldset>
                     </div>
                 </div>
                 <br>
@@ -47,18 +55,37 @@
                         <label class="labels">rate your happiness:</label>
                     </div>
                     <div class="col-md-6">
-
+                        <fieldset class="rating">
+                            <ng-container *ngFor="let w of [5,4,3,2,1]">
+                                <input [(ngModel)]='happiness' type="radio" [id]="'happy' + (w)" name="happy" [value]="w" />
+                                <label class="full" [for]="'happy' + (w)"></label>
+                            </ng-container>
+                        </fieldset>
 
                     </div>
                 </div>
-
-
-
-
-
+                <br>
             </div>
-        </div>
-        <div class="col-md-4"></div>
-    </div>
+            <br>
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="labels">comment on review:</label>
+                </div>
+                <div class="col-md-6">
+                    <textarea [(ngModel)]="comment" class="form-control form-control-lg" type="textarea" placeholder="comment on review"></textarea>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4 ">
+                    <input class="btn justify-content-right" type="submit" value="Submit" (click)="commentTest()">
+                </div>
+                <div class="col-md-4"></div>
+            </div>
 
-</div>
+        </div>
+        <div class="col-md-2"></div>
+
+
+    </div>

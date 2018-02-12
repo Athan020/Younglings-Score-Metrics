@@ -1,3 +1,31 @@
-<div class="row justify-content-center m-0">
-    <app-leaderboard></app-leaderboard>
+<div class="row justify-content-center m-0 p-5">
+    <h3 *ngIf="authentication.currentUser() === true" class="col-12 text-center">Hello {{authentication.getName()}}!</h3>
+    <div class="col-md-6 p-1">
+        <h3 class="text-center">Leaderboard:</h3>
+        <app-leaderboard *ngIf="db.highestSprintNum !== undefined && db.sprints !== undefined"></app-leaderboard>
+    </div>
+    <div class="col-md-6 p-1">
+        <h4 class="text-center">
+            <select name="info" id="info" [(ngModel)]="info">
+                <option value="Team information">Team information</option>
+                <option value="Member information">Member information</option>
+                <option value="PO information">PO information</option>
+            </select>
+        </h4>
+        <div *ngIf="info === 'Team information'">
+            <div *ngFor="let team of db.teams | async" class="pb-2">
+                <app-team-ratings [teamData]="team"></app-team-ratings>
+            </div>
+        </div>
+        <div *ngIf="info === 'Member information'">
+            <div *ngFor="let user of db.users | async" class="pb-2">
+                <app-user-ratings *ngIf="user.role == 'leader' || user.role == 'member'" [userData]="user"></app-user-ratings>
+            </div>
+        </div>
+        <div *ngIf="info === 'PO information'">
+            <div *ngFor="let po of db.users | async" class="pb-2">
+                <app-user-ratings *ngIf="po.role == 'po'" [userData]="po"></app-user-ratings>
+            </div>
+        </div>
+    </div>
 </div>
