@@ -3,7 +3,7 @@
         <div class="col-md-2"></div>
 
         <div class="col-md-8">
-            <div class="questionair">
+            <div class="questionnaire">
 
                 <br>
                 <div class="row">
@@ -13,7 +13,7 @@
                     <div class="col-md-6">
                         <fieldset class="rating">
                             <ng-container *ngFor="let x of [5,4,3,2,1]">
-                                <input [(ngModel)]="teamRating" #teamRating="ngModel" type="radio" [id]="'star' + (x)" name="star" [value]="x" />
+                                <input [(ngModel)]='teamRating' type="radio" [id]="'star' + (x)" name="star" [value]="x" />
                                 <label class="full" [for]="'star' + (x)"></label>
                             </ng-container>
                         </fieldset>
@@ -28,7 +28,7 @@
 
                         <fieldset class="rating">
                             <ng-container *ngFor="let y of [5,4,3,2,1]">
-                                <input [(ngModel)]="presentation" #prentation="ngModel" type="radio" [id]="'present' + (y)" name="present" [value]="y" />
+                                <input [(ngModel)]='presentation' type="radio" [id]="'present' + (y)" name="present" [value]="y" />
                                 <label class="full" [for]="'present' + (y)"></label>
                             </ng-container>
                         </fieldset>
@@ -43,7 +43,7 @@
                     <div class="col-md-6">
                         <fieldset class="rating">
                             <ng-container *ngFor="let z of [5,4,3,2,1]">
-                                <input [(ngModel)]="rateWork" #rateWork="ngModel" type="radio" [id]="'work' + (z)" name="work" [value]="z" />
+                                <input [(ngModel)]='rateWork' type="radio" [id]="'work' + (z)" name="work" [value]="z" />
                                 <label class="full" [for]="'work' + (z)"></label>
                             </ng-container>
                         </fieldset>
@@ -57,7 +57,7 @@
                     <div class="col-md-6">
                         <fieldset class="rating">
                             <ng-container *ngFor="let w of [5,4,3,2,1]">
-                                <input [(ngModel)]="happiness" #happiness="ngModel" type="radio" [id]="'happy' + (w)" name="happy" [value]="w" />
+                                <input [(ngModel)]='happiness' type="radio" [id]="'happy' + (w)" name="happy" [value]="w" />
                                 <label class="full" [for]="'happy' + (w)"></label>
                             </ng-container>
                         </fieldset>
@@ -72,14 +72,14 @@
                     <label class="labels">comment on review:</label>
                 </div>
                 <div class="col-md-6">
-                    <textarea [ngModel]="comment" #comment="ngModel" class="form-control form-control-lg" type="textarea" placeholder="comment on review"></textarea>
+                    <textarea [(ngModel)]="comment" class="form-control form-control-lg" type="textarea" placeholder="comment on review"></textarea>
                 </div>
             </div>
             <br>
             <div class="row">
                 <div class="col-md-4"></div>
                 <div class="col-md-4 ">
-                    <input class="btn justify-content-right" type="submit" value="Submit">
+                    <input class="btn justify-content-right" type="submit" value="Submit" (click)="commentTest()">
                 </div>
                 <div class="col-md-4"></div>
             </div>
