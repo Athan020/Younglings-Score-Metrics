@@ -1,17 +1,21 @@
-<div class="row justify-content-center m-0">
-    <table>
-        <tr>
-            <th>Team</th>
-            <th>Score</th>
-            <th>
-                <select name="sprint" [(ngModel)]="selectedSprint">
-                  <option *ngFor="let item of sprintNums" value={{item}}>Sprint {{item}}</option>
+<table class="table table-responsive table-striped table-dark">
+    <thead>
+        <tr scope="row">
+            <th scope="col">Team</th>
+            <th scope="col">Score</th>
+            <th scope="col">PO Happiness</th>
+            <th scope="col">
+                <select name="sprint" [(ngModel)]="selectedSprint" class="form-control">
+                    <option *ngFor="let item of sprintNums" [value]="item">Sprint {{item}}</option>
                 </select>
             </th>
         </tr>
-        <tr *ngFor="">
-            <td></td>
-            <td></td>
+    </thead>
+    <tbody>
+        <tr scope="row" *ngFor="let item of db.sprints | async">
+            <td *ngIf="item.id.split('-')[1] == this.selectedSprint">{{item.id.split('-')[0]}}</td>
+            <td *ngIf="item.id.split('-')[1] == this.selectedSprint">{{item.score}}</td>
+            <td colspan="2" *ngIf="item.id.split('-')[1] == this.selectedSprint">{{item.poHappiness}}</td>
         </tr>
-    </table>
-</div>
+    </tbody>
+</table>

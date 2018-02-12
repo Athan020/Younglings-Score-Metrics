@@ -1,33 +1,43 @@
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { Subscription } from 'rxjs/Subscription';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class DatabaseService {
-
     users: Observable<any>;
     teams: Observable<any>;
     sprints: Observable<any>;
-    currentSprint: Observable<any>;
+    highestSprintNum: number;
+    role: string;
+    poAverageHappiness: number;
 
-    constructor(private afStore: AngularFirestore) {
+    constructor(private afStore: AngularFirestore, private router: Router) {
         this.users = afStore.collection('users').valueChanges();
         this.teams = afStore.collection('teams').valueChanges();
-        this.teams = afStore.collection('sprints').valueChanges();
+        this.sprints = afStore.collection('sprints', ref => ref.orderBy('score', 'desc')).snapshotChanges().map(actions => {
+            return actions.map(a => {
+                const data = a.payload.doc.data();
+                const id = a.payload.doc.id;
+                return { id, ...data };
+            });
+        });
+        this.getNumSprints();
     }
 
-    createNewUser(uid: string, role: string, team: string, newTeam: boolean) {
+    createNewUser(uid: string, role: string, team: string, newTeam: boolean, name: string) {
         if (role === 'manager') {
-            this.afStore.firestore.collection('users').add({ 'user': uid, 'role': role });
+            this.afStore.firestore.collection('users').add({ 'user': uid, 'role': role, 'name': name });
         } else if (role === 'po') {
-            this.afStore.firestore.collection('users').add({ 'user': uid, 'role': role, 'team': team });
+            this.afStore.firestore.collection('users').add({ 'user': uid, 'role': role, 'team': team, 'name': name });
             this.pushToTeams(team, uid, role);
         } else {
             // tslint:disable-next-line:max-line-length
-            this.afStore.firestore.collection('users').add({ 'user': uid, 'role': role, 'team': team, 'previousRating': 0, 'rating': 0 });
+            this.afStore.firestore.collection('users').add({ 'user': uid, 'role': role, 'team': team, 'previousRating': 0, 'rating': 0, 'name': name });
             if (role === 'leader' && newTeam) {
                 // tslint:disable-next-line:max-line-length
-                this.afStore.firestore.collection('teams').add({ 'name': team, 'leaders': [uid], 'velocity': 0, 'previousRating': 0, 'rating': 0 });
+                this.afStore.firestore.collection('teams').add({ 'name': team, 'leaders': [uid], 'velocity': 0, 'previousRating': 0, 'rating': 0, 'totalSprints': 0 });
             } else {
                 this.pushToTeams(team, uid, role);
             }
@@ -74,45 +84,41 @@ export class DatabaseService {
         });
     }
 
-    getNumSprints(): number {
-        const sprints: Observable<any> = this.afStore.collection('sprints').snapshotChanges().map(actions => {
-            return actions.map(a => {
-                const data = a.payload.doc.data();
-                const id = a.payload.doc.id;
-                return { id, ...data };
-            });
-        });
-
-        let highest = 1;
-
-        sprints.subscribe(response => {
+    getNumSprints() {
+        const teams = this.afStore.collection('teams', ref => ref.orderBy('totalSprints', 'desc')).valueChanges();
+        let flag = true;
+        teams.subscribe(response => {
             response.map(element => {
-                if (element.id.substring(-1).parseInt() > highest) {
-                    highest = element.id.substring(-1).parseInt();
+                if (flag) {
+                    this.highestSprintNum = element['totalSprints'];
+                    flag = false;
                 }
             });
         });
-        console.log(highest);
-        return highest;
     }
 
-    setCurrentSprint(sprintNum) {
-        const sprints: Observable<any> = this.afStore.collection('sprints').snapshotChanges().map(actions => {
-            return actions.map(a => {
-                const data = a.payload.doc.data();
-                const id = a.payload.doc.id;
-                return { id, ...data };
-            });
-        });
-
-        sprints.subscribe(response => {
+    updateRole(uid) {
+        this.users.subscribe(response => {
             response.map(element => {
-                if (element.id.contains(sprintNum)) {
-                    this.currentSprint += element;
+                if (element.user === uid) {
+                    this.role = element.role;
                 }
             });
         });
-        console.log(this.currentSprint);
+    }
+
+    calcPoAverageHappiness(uid) {
+        this.sprints.subscribe(response => {
+            let total = 0;
+            let sprints = 0;
+            response.map(element => {
+                if (element.po === uid) {
+                    total += element.poHappiness;
+                    sprints++;
+                }
+            });
+            this.poAverageHappiness = total / sprints;
+        });
     }
 
 }

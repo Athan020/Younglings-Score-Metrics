@@ -1,3 +1,5 @@
+import { DatabaseService } from './../../services/database/database.service';
+import { AuthenticationService } from './../../services/authentication/authentication.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  constructor(protected readonly authentication: AuthenticationService, protected readonly db: DatabaseService) { }
 
   ngOnInit() {
   }
