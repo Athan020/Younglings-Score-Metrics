@@ -2,15 +2,9 @@
   <!-- Banner -->
   <div class="row">
     <div class="col-md-6">
-      <h3>{{teamLeader.team}}</h3>
+      <h3 *ngIf="teamLeader">{{teamLeader.team}}</h3>
     </div>
     <div class="col-md-6 d-flex justify-content-end">
-      <!-- <div class="alert alert-success rounded-circle">
-        <h4>Team Rating: </h4>
-        <div>
-          <h3>{{team.rating}}</h3>
-        </div>
-      </div> -->
     </div>
 
   </div>
@@ -19,48 +13,16 @@
     <div class="col-md-6">
       <h2>{{this.afAuth.auth.currentUser.displayName}}'s Dashboard</h2>
     </div>
-    <!-- <div class="col-md-6 d-flex justify-content-end">
-      <div *ngIf="currentSprint.poHappiness > 3">
-        <i style="color:green" class="fa fa-5x fa-smile-o " aria-hidden="true"></i>
-        <h5>{{currentSprint.poComment}}</h5>
-      </div>
-
-      <div *ngIf="currentSprint.poHappiness === 3">
-        <i style="color:yellow" class="fa fa-5x fa-meh-o " aria-hidden="true"></i>
-        <h5>{{currentSprint.poComment}}</h5>
-      </div>
-      <div *ngIf="currentSprint.poHappiness < 3">
-        <i style="color:red" class="fa fa-5x fa-frown-o " aria-hidden="true"></i>
-        <h5>{{currentSprint.poComment}}</h5>
-      </div>
-    </div> -->
-
   </div>
-
-
-  <!-- Statistics -->
-
-
-
-  <!-- My Rating  -->
-  <!-- <div class="row ">
-    <div class="col-md-12 d-flex justify-content-end">
-      <div class="alert alert-success rounded-circle">
-        <h4>My Rating: </h4>
-        <div>
-          <h3>{{teamLeader.rating}}</h3>
-        </div>
-      </div>
-    </div>
-  </div> -->
 
   <!-- Edit Velocity -->
   <div class="row ">
     <div class="col-md-6">
-      <app-leaderboard></app-leaderboard>
-      <div *ngFor=" let team of db.teams | async">
+      <div class="mb-2" *ngFor=" let team of db.teams | async">
         <app-team-ratings *ngIf="teamLeader.team === team.name" [teamData]="team"></app-team-ratings>
       </div>
+      <app-leaderboard></app-leaderboard>
+
     </div>
 
     <div class="col-md-6">
@@ -76,27 +38,22 @@
 
           <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
             <div class="card-body bg-dark">
-              <input [(ngModel)]="velocity" [value]="team.velocity" min="0" type="number" class="form-control" name="" id="">
+              <input *ngIf="team" [(ngModel)]="velocity" [value]="team.velocity" min="0" type="number" class="form-control" name="" id="">
               <button class="btn btn-primary mt-2" type="submit" (click)="editVelocity(velocity)">Submit</button>
             </div>
           </div>
         </div>
       </div>
-      <!-- <app-zippy title="Velocity">
-        <label for="">Edit Velocity</label>
-        <input [(ngModel)]="velocity" [value]="team.velocity" min="0" type="number" class="form-control" name="" id="">
-        <button class="btn btn-primary mt-2" type="submit" (click)="editVelocity(velocity)">Submit</button>
-      </app-zippy> -->
 
       <div class="mt-5 p-3 bg-dark">
-        <h4 class="text-white"> Sprint 1</h4>
+        <h4 class="text-white"> Sprint {{db.teamHighestSprint+1}}</h4>
         <label class="text-white" for="">Sprint Points</label>
-        <input type="number" [(ngModel)]="sprintPoints" class="form-control" name="" id="">
+        <input type="number" [(ngModel)]="sprintPoints" min="0" class="form-control" name="" id="">
 
         <label class="text-white" for="">Sprint Start</label>
         <input type="date" [(ngModel)]="startDate" class="form-control mb-3" name="start-date" id="">
 
-        <button class="btn btn-primary" (click)="newSprint(1)">Start Sprint</button>
+        <button class="btn btn-primary" (click)="newSprint(db.teamHighestSprint+1)">Start Sprint</button>
         <button class="btn btn-primary" (click)="endSprint()">End Sprint</button>
 
       </div>

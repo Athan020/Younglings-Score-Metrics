@@ -5,6 +5,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 
 @Injectable()
 export class DatabaseService {
+    teamHighestSprint: number;
     users: Observable<any>;
     teams: Observable<any>;
     sprints: Observable<any>;
@@ -31,7 +32,7 @@ export class DatabaseService {
 
     createSprint(teamName, sprintNum, points, startDate) {
         this.afStore.collection('sprints').doc(teamName + '-' + sprintNum)
-        .set({ 'endDate': "",'points': points, 'score': 0, 'startDate': startDate })
+            .set({ 'endDate': "", 'points': points, 'score': 0, 'startDate': startDate })
     }
 
     createNewUser(uid: string, role: string, team: string, newTeam: boolean, name: string) {
@@ -63,7 +64,8 @@ export class DatabaseService {
                         'leaders': [uid],
                         'velocity': 0,
                         'previousRating': 0,
-                        'rating': 0
+                        'rating': 0,
+                        'totalSprints': 0
                     });
             } else {
                 this.pushToTeams(team, uid, role);
@@ -208,7 +210,7 @@ export class DatabaseService {
         });
     }
 
-    editEndDate(endDate:string,teamName: string){
+    editEndDate(endDate: string, teamName: string) {
         const sprints: Observable<any> = this.afStore.collection('sprints').snapshotChanges().map(actions => {
             return actions.map(a => {
                 const data = a.payload.doc.data();
@@ -216,14 +218,50 @@ export class DatabaseService {
                 return { id, ...data };
             });
         });
-
         let flag = true;
+        // console.log(this.teamHighestSprint);
+        const id = teamName + '-' + this.teamHighestSprint;
+        // console.log(id);
         sprints.subscribe(response => {
             response.map(element => {
-                if (element.id.includes(teamName) && flag) {
+                if (element.id === id && flag) {
                     const key = element.id;
                     this.afStore.collection('sprints').doc(key).update({ 'endDate': endDate });
                     flag = false;
+                }
+            });
+        });
+
+
+        const teams: Observable<any> = this.afStore.collection('teams').snapshotChanges().map(actions => {
+            return actions.map(a => {
+                const data = a.payload.doc.data();
+                const id = a.payload.doc.id;
+                return { id, ...data };
+            });
+        });
+
+        let newFlag = true;
+        let totalSprints = 0;
+        teams.subscribe(response =>
+
+            response.map(element => {
+                if (element.name === teamName && newFlag) {
+                    totalSprints = element.totalSprints;
+                    totalSprints++;
+                    this.afStore.collection('teams').doc(element.id).update({ 'totalSprints': totalSprints });
+                    newFlag = false;
+                }
+            }))
+    }
+
+    getTeamSprint(teamName) {
+        const teams = this.afStore.collection('teams', ref => ref.orderBy('totalSprints', 'desc')).valueChanges();
+        this.teamHighestSprint = 0;
+        teams.subscribe(response => {
+            response.map(element => {
+                if (element['name'] === teamName && element['totalSprints'] > this.teamHighestSprint) {
+                    this.teamHighestSprint = element['totalSprints'];
                 }
             });
         });
