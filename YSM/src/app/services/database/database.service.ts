@@ -19,7 +19,14 @@ export class DatabaseService {
     ) {
         this.users = afStore.collection('users').valueChanges();
         this.teams = afStore.collection('teams').valueChanges();
-        this.sprints = afStore.collection('sprints').valueChanges();
+        this.sprints = afStore.collection('sprints', ref => ref.orderBy('score', 'desc')).snapshotChanges().map(actions => {
+            return actions.map(a => {
+                const data = a.payload.doc.data();
+                const id = a.payload.doc.id;
+                return { id, ...data };
+            });
+        });
+        this.getNumSprints();
     }
 
     createSprint(teamName, sprintNum, points, startDate) {
@@ -156,10 +163,11 @@ export class DatabaseService {
     }
 
     updateRole(uid) {
-        this.users.subscribe(response => {
+        const users = this.afStore.collection('users').valueChanges();
+        users.subscribe(response => {
             response.map(element => {
-                if (element.user === uid) {
-                    this.role = element.role;
+                if (element['user'] === uid) {
+                    this.role = element['role'];
                 }
             });
         });

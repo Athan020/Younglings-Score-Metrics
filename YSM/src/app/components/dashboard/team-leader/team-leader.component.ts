@@ -28,7 +28,7 @@ export class TeamLeaderComponent implements OnInit {
       response.map(element => {  
         if(element.user === this.afAuth.auth.currentUser.uid){
            this.teamLeader = element;
-          //  console.log(element)
+           console.log(element)
         }
    
       })
@@ -38,7 +38,7 @@ export class TeamLeaderComponent implements OnInit {
       response.map(element => {  
         if(element.name === this.teamLeader.team){
            this.team = element;
-          //  console.log(element.name)
+           console.log(element.name)
         }
    
       })
@@ -48,7 +48,7 @@ export class TeamLeaderComponent implements OnInit {
       response.map(element => {  
         if(element.poComment === 'WORK GOTDAMMIT'){
            this.currentSprint = element;
-          //  console.log(element)
+           console.log(element)
         }
    
       })
