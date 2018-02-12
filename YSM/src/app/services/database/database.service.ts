@@ -183,7 +183,7 @@ export class DatabaseService {
                     sprints++;
                 }
             });
-            this.poAverageHappiness = total / sprints;
+            this.poAverageHappiness = Math.round((total / sprints) * 10) / 10;
         });
     }
 

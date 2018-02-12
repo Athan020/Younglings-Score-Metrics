@@ -12,10 +12,13 @@ export class TeamRatingsComponent implements OnInit {
   @Input()
   teamData;
 
+  average;
+
   constructor(protected db: DatabaseService) {
   }
 
   ngOnInit() {
+    this.average = Math.round((this.teamData.rating / this.teamData.totalSprints) * 10) / 10;
   }
 
 }
