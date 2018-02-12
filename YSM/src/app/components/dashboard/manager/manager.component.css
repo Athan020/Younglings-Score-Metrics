@@ -1,3 +1,11 @@
 app-team-ratings {
     width: 100%;
 }
+
+.leaderboard-heading {
+    margin-bottom: 25.5px;
+}
+
+select {
+    margin-bottom: 20px;
+}

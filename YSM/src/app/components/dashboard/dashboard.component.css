@@ -1,4 +1,4 @@
 button {
-    position: relative;
-    float: right;
+    position: absolute;
+    right: 0;
 }

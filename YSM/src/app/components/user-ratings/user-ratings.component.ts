@@ -12,11 +12,13 @@ export class UserRatingsComponent implements OnInit {
   @Input()
   userData;
 
+  average: number;
   constructor(protected db: DatabaseService) {
-    db.calcPoAverageHappiness(this.userData.user);
   }
 
   ngOnInit() {
+    this.db.calcPoAverageHappiness(this.userData.user);
+    this.average = Math.round((this.userData.rating / this.userData.totalSprints) * 10) / 10;
   }
 
 }

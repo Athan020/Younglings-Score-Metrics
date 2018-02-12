@@ -11,9 +11,6 @@ export class ManagerComponent implements OnInit {
   info = 'Team information';
 
   constructor(protected readonly db: DatabaseService, protected readonly authentication: AuthenticationService) {
-    this.db.users.subscribe(response => {
-      console.log(response);
-  });
   }
 
   ngOnInit() {

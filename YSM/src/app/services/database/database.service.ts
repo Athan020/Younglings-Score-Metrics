@@ -158,10 +158,11 @@ export class DatabaseService {
     }
 
     updateRole(uid) {
-        this.users.subscribe(response => {
+        const users = this.afStore.collection('users').valueChanges();
+        users.subscribe(response => {
             response.map(element => {
-                if (element.user === uid) {
-                    this.role = element.role;
+                if (element['user'] === uid) {
+                    this.role = element['role'];
                 }
             });
         });
@@ -177,7 +178,7 @@ export class DatabaseService {
                     sprints++;
                 }
             });
-            this.poAverageHappiness = total / sprints;
+            this.poAverageHappiness = Math.round((total / sprints) * 10) / 10;
         });
     }
 
