@@ -58,9 +58,12 @@
   <div class="row ">
     <div class="col-md-6">
       <app-leaderboard></app-leaderboard>
+      <div *ngFor=" let team of db.teams | async">
+        <app-team-ratings *ngIf="teamLeader.team === team.name" [teamData]="team"></app-team-ratings>
+      </div>
     </div>
-    <div class="col-md-6">
 
+    <div class="col-md-6">
       <div id="accordion">
         <div class="card">
           <div class="card-header bg-dark" id="headingOne">
@@ -72,9 +75,9 @@
           </div>
 
           <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-            <div class="card-body">
-                <input [(ngModel)]="velocity" [value]="team.velocity" min="0" type="number" class="form-control" name="" id="">
-                <button class="btn btn-primary mt-2" type="submit" (click)="editVelocity(velocity)">Submit</button>
+            <div class="card-body bg-dark">
+              <input [(ngModel)]="velocity" [value]="team.velocity" min="0" type="number" class="form-control" name="" id="">
+              <button class="btn btn-primary mt-2" type="submit" (click)="editVelocity(velocity)">Submit</button>
             </div>
           </div>
         </div>
@@ -85,13 +88,12 @@
         <button class="btn btn-primary mt-2" type="submit" (click)="editVelocity(velocity)">Submit</button>
       </app-zippy> -->
 
-      <div class="mt-5">
-
-        <h4>Sprint 1</h4>
-        <label for="">Sprint Points</label>
+      <div class="mt-5 p-3 bg-dark">
+        <h4 class="text-white"> Sprint 1</h4>
+        <label class="text-white" for="">Sprint Points</label>
         <input type="number" [(ngModel)]="sprintPoints" class="form-control" name="" id="">
 
-        <label for="">Sprint Start</label>
+        <label class="text-white" for="">Sprint Start</label>
         <input type="date" [(ngModel)]="startDate" class="form-control mb-3" name="start-date" id="">
 
         <button class="btn btn-primary" (click)="newSprint(1)">Start Sprint</button>
