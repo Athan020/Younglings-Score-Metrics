@@ -13,7 +13,12 @@ export class DatabaseService {
     constructor(private afStore: AngularFirestore) {
         this.users = afStore.collection('users').valueChanges();
         this.teams = afStore.collection('teams').valueChanges();
-        this.teams = afStore.collection('sprints').valueChanges();
+        this.sprints = afStore.collection('sprints').valueChanges();
+    }
+
+    createSprint(teamName, sprintNum, points, startDate) {
+        this.afStore.collection('sprints').doc(teamName + '-' + sprintNum)
+        .set({ 'endDate': "",'points': points, 'score': 0, 'startDate': startDate })
     }
 
     createNewUser(uid: string, role: string, team: string, newTeam: boolean) {
@@ -113,6 +118,48 @@ export class DatabaseService {
             });
         });
         console.log(this.currentSprint);
+    }
+
+    editVelocity(velocity: number, teamName: string) {
+        const teams: Observable<any> = this.afStore.collection('teams').snapshotChanges().map(actions => {
+            return actions.map(a => {
+                const data = a.payload.doc.data();
+                const id = a.payload.doc.id;
+                return { id, ...data };
+            });
+        });
+
+        let flag = true;
+        teams.subscribe(response => {
+            response.map(element => {
+                if (element.name === teamName && flag) {
+                    const key = element.id;
+                    this.afStore.collection('teams').doc(key).update({ 'velocity': velocity });
+                    flag = false;
+                }
+            });
+        });
+    }
+
+    editEndDate(endDate:string,teamName: string){
+        const sprints: Observable<any> = this.afStore.collection('sprints').snapshotChanges().map(actions => {
+            return actions.map(a => {
+                const data = a.payload.doc.data();
+                const id = a.payload.doc.id;
+                return { id, ...data };
+            });
+        });
+
+        let flag = true;
+        sprints.subscribe(response => {
+            response.map(element => {
+                if (element.id.includes(teamName) && flag) {
+                    const key = element.id;
+                    this.afStore.collection('sprints').doc(key).update({ 'endDate': endDate });
+                    flag = false;
+                }
+            });
+        });
     }
 
 }

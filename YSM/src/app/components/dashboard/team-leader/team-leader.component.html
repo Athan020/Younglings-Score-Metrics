@@ -1,51 +1,54 @@
 <div class="container-fluid ">
   <!-- Banner -->
   <div class="row">
-
-    <div>
+    <div class="col-md-6">
       <h3>{{teamLeader.team}}</h3>
     </div>
+    <div class="col-md-6 d-flex justify-content-end">
+      <div class="alert alert-success rounded-circle">
+        <h4>Team Rating: </h4>
+        <div>
+          <h3>{{team.rating}}</h3>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+  <h2>{{this.afAuth.auth.currentUser.displayName}}'s Dashboard</h2>
+    </div>
+    <!-- <div class="col-md-6 d-flex justify-content-end">
+      <div *ngIf="currentSprint.poHappiness > 3">
+        <i style="color:green" class="fa fa-5x fa-smile-o " aria-hidden="true"></i>
+        <h5>{{currentSprint.poComment}}</h5>
+      </div>
+
+      <div *ngIf="currentSprint.poHappiness === 3">
+        <i style="color:yellow" class="fa fa-5x fa-meh-o " aria-hidden="true"></i>
+        <h5>{{currentSprint.poComment}}</h5>
+      </div>
+      <div *ngIf="currentSprint.poHappiness < 3">
+        <i style="color:red" class="fa fa-5x fa-frown-o " aria-hidden="true"></i>
+        <h5>{{currentSprint.poComment}}</h5>
+      </div>
+    </div> -->
 
   </div>
 
 
   <!-- Statistics -->
 
-  <h2>Leader Name</h2>
 
-  <!-- PO Happiness -->
-  <div class="row justify-content-center">
-    <div>
-      <i *ngIf="teamLeader.user === this.afAuth.auth.currentUser.uid && teamLeader.rating > 3" style="color:green" class="fa fa-5x fa-smile-o "
-        aria-hidden="true"></i>
-      <i *ngIf="teamLeader.user === this.afAuth.auth.currentUser.uid && teamLeader.rating === 3" style="color:yellow" class="fa fa-5x fa-meh-o "
-        aria-hidden="true"></i>
-      <i *ngIf="teamLeader.user === this.afAuth.auth.currentUser.uid && teamLeader.rating < 3" style="color:red" class="fa fa-5x fa-frown-o "
-        aria-hidden="true"></i>
-    </div>
-
-
-  </div>
-
-  <!-- Team rating -->
-  <div class="row ">
-    <div class="col-md-12 d-flex justify-content-center">
-      <div class="alert alert-success w-50">
-        <h4>Team Rating: </h4>
-        <div>
-          <h3 *ngIf="teamLeader.user === this.afAuth.auth.currentUser.uid">{{teamLeader.rating}}</h3>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- My Rating  -->
   <div class="row ">
-    <div class="col-md-12 d-flex justify-content-center">
-      <div class="alert alert-success w-50">
+    <div class="col-md-12 d-flex justify-content-end">
+      <div class="alert alert-success rounded-circle">
         <h4>My Rating: </h4>
         <div>
-          <h3 *ngIf="teamLeader.user === this.afAuth.auth.currentUser.uid">{{teamLeader.rating}}</h3>
+          <h3>{{teamLeader.rating}}</h3>
         </div>
       </div>
     </div>
@@ -53,38 +56,32 @@
 
   <!-- Edit Velocity -->
   <div class="row ">
-    <div class="col-md-12">
-      <app-zippy title="Edit Velocity">
+    <div class="col-md-6">ScoreBoard</div>
+    <div class="col-md-6">
+      <app-zippy title="Velocity">
         <label for="">Edit Velocity</label>
-        <input type="number" class="form-control" name="" id="">
+        <input [(ngModel)]="velocity" [value]="team.velocity" min="0" type="number" class="form-control" name="" id="">
+        <button class="btn btn-primary mt-2" type="submit" (click)="editVelocity(velocity)">Submit</button>
       </app-zippy>
+
+      <div>
+
+        <h4>Sprint 1</h4>
+        <label for="">Sprint Points</label>
+        <input type="number"  [(ngModel)]="sprintPoints" class="form-control" name="" id="">
+
+        <label for="">Sprint Start</label>
+        <input type="date" [(ngModel)]="startDate" class="form-control mb-3" name="start-date" id="">
+
+        <button class="btn btn-primary" (click)="newSprint(1)">Start Sprint</button>
+        <button class="btn btn-primary" (click)="endSprint()">End Sprint</button>
+
+      </div>
+
+
     </div>
+
   </div>
 
-  <!-- Set Points -->
-  <div class="row ">
-    <div class="col-md-12">
-      <app-zippy title="Set points">
-        <label for="">Edit Sprint Points: </label>
-        <input type="number" class="form-control" name="" id="">
-      </app-zippy>
-    </div>
-  </div>
-
-  <!-- Sprint Dates -->
-  <div class="row ">
-    <div class="col-md-12 ">
-      <app-zippy title="Sprint Dates">
-
-        <label for="">Start Date: </label>
-        <input type="date" class="form-control mb-3" name="start-date" id="">
-
-        <label for="">End Date: </label>
-        <input type="date" class="form-control" name="end-date" id="">
-
-      </app-zippy>
-    </div>
-  </div>
-
-
+ 
 </div>
