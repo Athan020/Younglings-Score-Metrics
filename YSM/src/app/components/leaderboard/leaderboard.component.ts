@@ -8,10 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LeaderboardComponent implements OnInit {
   sprintNums: number[] = [];
+  selectedSprint = this.db.highestSprintNum;
 
   constructor(protected readonly db: DatabaseService) {
-    const highest = db.getNumSprints();
-    for (let i = 1; i <= highest; i++) {
+    for (let i = 1; i <= this.db.highestSprintNum; i++) {
       this.sprintNums.push(i);
     }
   }
