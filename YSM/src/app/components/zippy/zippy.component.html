@@ -1,0 +1,9 @@
+<div class="zippy mx-auto mb-3">
+  <div class="zip-title p-4" (click)="toggle()">
+      {{title}}<i class="fa fa-chevron-down float-right"></i>
+      
+  </div>
+  <div class="p-3" [hidden]="!visible">
+   <ng-content></ng-content>
+  </div>
+</div>

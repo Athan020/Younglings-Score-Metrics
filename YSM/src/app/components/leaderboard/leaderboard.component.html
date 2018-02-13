@@ -1,0 +1,17 @@
+<div class="row justify-content-center m-0">
+    <table>
+        <tr>
+            <th>Team</th>
+            <th>Score</th>
+            <th>
+                <select name="sprint" [(ngModel)]="selectedSprint">
+                  <option *ngFor="let item of sprintNums" value={{item}}>Sprint {{item}}</option>
+                </select>
+            </th>
+        </tr>
+        <tr *ngFor="">
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+</div>

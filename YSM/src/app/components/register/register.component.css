@@ -12,3 +12,41 @@
     border: none;
     border: 2px solid grey;
 }
+
+
+/* Radio buttons */
+
+input[type="radio"] {
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background: #ffffff;
+    box-shadow: inset 0 0 0 .3em white, 0 0 0 .2em;
+    border-radius: 50%;
+    transition: .2s;
+    cursor: pointer;
+    color: #233539;
+}
+
+input[type="radio"]:hover,
+input[type="radio"]:checked {
+    background: #233539;
+    box-shadow: inset 0 0 0 .15em white, 0 0 0 .2em;
+}
+
+input[type="radio"]:checked {
+    background: #233539;
+    box-shadow: inset 0 0 0 .15em white, 0 0 0 .2em #233539;
+}
+
+input[type="radio"]:focus {
+    outline: 0;
+}
+
+.team {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.1px;
+    color: #323c47;
+    cursor: pointer;
+}
