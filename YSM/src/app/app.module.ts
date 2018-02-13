@@ -1,3 +1,4 @@
+import { TeamMemberComponent } from './components/dashboard/team-member/team-member.component';
 import { ReviewComponent } from './components/review/review.component';
 import { DatabaseService } from './services/database/database.service';
 import { AuthguardService } from './services/authguard/authguard.service';
@@ -29,7 +30,7 @@ export const firebaseConfig = {
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    ReviewComponent
+    ReviewComponent,TeamMemberComponent
   ],
   imports: [
     BrowserModule,

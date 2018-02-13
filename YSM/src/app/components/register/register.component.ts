@@ -19,10 +19,14 @@ export class RegisterComponent implements OnInit {
   teamsList;
 
   // tslint:disable-next-line:max-line-length
-  constructor(protected readonly authentication: AuthenticationService, protected readonly router: Router, protected readonly db: DatabaseService) { }
-
+  constructor(protected readonly authentication: AuthenticationService, protected readonly router: Router, protected readonly  db: DatabaseService) {
+   
+  }
+  
   ngOnInit() {
     this.teamsList = this.db.getTeams();
+    // console.log('get team mthd'+  this.db.getTeams() )  
+    
   }
 
   onSubmit() {
