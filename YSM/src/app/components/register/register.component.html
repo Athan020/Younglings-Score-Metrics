@@ -45,7 +45,7 @@
                 <label for="team" class="mt-4">Teams:</label>
                 <select name="team" [(ngModel)]="team" #selectedTeam="ngModel" class="form-control mt-1" required>
                     <option *ngFor="let item of this.db.teams | async" value={{item.name}}>{{item.name}}</option>
-              </select>
+                </select>
                 <div [hidden]="selectedTeam.value !== '' || selectedTeam.pristine" class="alert alert-danger mt-1">
                     Please select a team
                 </div>

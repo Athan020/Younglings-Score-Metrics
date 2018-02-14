@@ -1,3 +1,5 @@
+import { UserRatingsComponent } from './components/user-ratings/user-ratings.component';
+import { TeamRatingsComponent } from './components/team-ratings/team-ratings.component';
 import { LeaderboardComponent } from './components/leaderboard/leaderboard.component';
 import { ReviewComponent } from './components/review/review.component';
 import { DatabaseService } from './services/database/database.service';
@@ -43,7 +45,9 @@ export const firebaseConfig = {
     TeamMemberComponent,
     TeamLeaderComponent,
     ManagerComponent,
-    LeaderboardComponent
+    LeaderboardComponent,
+    TeamRatingsComponent,
+    UserRatingsComponent
   ],
   imports: [
     BrowserModule,

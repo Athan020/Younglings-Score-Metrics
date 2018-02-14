@@ -10,20 +10,11 @@ import { ManagerComponent } from './components/dashboard/manager/manager.compone
 import { TeamMemberComponent } from './components/dashboard/team-member/team-member.component';
 
 const routes: Routes = [
-    { path: '', redirectTo: '/dashboard', pathMatch: 'full'},
+    { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
-    { path: 'review', component: ReviewComponent},
-    {
-        path: 'dashboard', component: DashboardComponent, children: [
-            { path: 'team-leader', component: TeamLeaderComponent },
-            { path: 'manager', component: ManagerComponent },
-            { path: 'team-member', component: TeamMemberComponent },
-            {path: '', redirectTo: '/team-leader', pathMatch: 'full'}
-
-        ]
-    },
-
+    { path: 'dashboard', component: DashboardComponent, canActivate: [AuthguardService] },
+    { path: '**', redirectTo: '/dashboard', pathMatch: 'full' }
 ];
 
 @NgModule({

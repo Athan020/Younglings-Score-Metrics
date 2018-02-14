@@ -42,27 +42,38 @@ export class AuthenticationService {
 
     signUp(email, password, name, role, team, newTeam) {
         if (this.loggedInWithGoogle) {
-            this.db.createNewUser(this.afAuth.auth.currentUser.uid, role, team, newTeam);
+            this.db.createNewUser(this.afAuth.auth.currentUser.uid, role, team, newTeam, this.getName());
         } else {
-        this.logout();
-        this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(
-            (success) => {
-                this.updateTable(name, role, team, newTeam);
-                // this.router.navigate(['/dashboard']);
-            }).catch(
-            (err) => {
-                if (err.message === 'The email address is already in use by another account.') {
-                    alert(err.message);
-                } else {
-                    console.log(err.message);
-                }
-            });
+            this.logout();
+            this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(
+                (success) => {
+                    this.updateTable(name, role, team, newTeam);
+                    // this.router.navigate(['/dashboard']);
+                }).catch(
+                (err) => {
+                    if (err.message === 'The email address is already in use by another account.') {
+                        alert(err.message);
+                    } else {
+                        console.log(err.message);
+                    }
+                });
         }
     }
 
     updateTable(name, role, team, newTeam) {
         this.afAuth.auth.currentUser.updateProfile({ displayName: name, photoURL: null });
-        this.db.createNewUser(this.afAuth.auth.currentUser.uid, role, team, newTeam);
+        this.db.createNewUser(this.afAuth.auth.currentUser.uid, role, team, newTeam, this.getName());
+    }
+
+    getName() {
+        return this.afAuth.auth.currentUser.displayName;
+    }
+
+    currentUser(): boolean {
+        if (this.afAuth.auth.currentUser === null) {
+            return false;
+        }
+        return true;
     }
 
 }
