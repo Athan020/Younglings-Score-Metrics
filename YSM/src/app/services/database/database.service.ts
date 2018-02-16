@@ -32,7 +32,7 @@ export class DatabaseService {
 
     createSprint(teamName, sprintNum, points, startDate) {
         this.afStore.collection('sprints').doc(teamName + '-' + sprintNum)
-            .set({ 'endDate': "", 'points': points, 'score': 0, 'startDate': startDate })
+            .set({ 'endDate': '', 'points': points, 'score': 0, 'startDate': startDate });
     }
 
     createNewUser(uid: string, role: string, team: string, newTeam: boolean, name: string) {
@@ -220,11 +220,11 @@ export class DatabaseService {
         });
         let flag = true;
         // console.log(this.teamHighestSprint);
-        const id = teamName + '-' + this.teamHighestSprint;
+        const teamId = teamName + '-' + this.teamHighestSprint;
         // console.log(id);
         sprints.subscribe(response => {
             response.map(element => {
-                if (element.id === id && flag) {
+                if (element.id === teamId && flag) {
                     const key = element.id;
                     this.afStore.collection('sprints').doc(key).update({ 'endDate': endDate });
                     flag = false;
@@ -252,7 +252,7 @@ export class DatabaseService {
                     this.afStore.collection('teams').doc(element.id).update({ 'totalSprints': totalSprints });
                     newFlag = false;
                 }
-            }))
+            }));
     }
 
     getTeamSprint(teamName) {

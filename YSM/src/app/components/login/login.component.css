@@ -12,3 +12,21 @@
     border: none;
     border: 2px solid grey;
 }
+
+.login {
+    height: 100vh;
+}
+
+.leftBlock {
+    background-color: black;
+}
+
+img {
+    width: 80%;
+    margin-top: 30vh;
+}
+
+.loginForm {
+    padding-top: 20vh;
+    box-shadow: 0px 0px 15px 2px #ffffff;
+}

@@ -25,18 +25,12 @@ export class RegisterComponent implements OnInit {
   constructor(protected readonly authentication: AuthenticationService, protected readonly router: Router, protected readonly db: DatabaseService) { }
 
   ngOnInit() {
-    // this.teamsList = this.db.getTeams();
   }
 
   onSubmit() {
     this.submitted = true;
-    // if (this.password.length() >= 8) {
-      this.authentication.signUp(this.email, this.password, this.name, this.role, this.team, this.newTeam);
-    // } else {
-    //   alert('Password needs to be atleast 8 characters long');
-    // }
-
-
+    this.authentication.signUp(this.email, this.password, this.name, this.role, this.team, this.newTeam);
+    this.router.navigate(['/register']);
   }
 
   setNewTeam(newTeam) {
