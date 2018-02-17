@@ -18,7 +18,7 @@ export class TeamLeaderComponent implements OnInit {
   sprintPoints:number=0;
   startDate:Date;
   endDate:Date= new Date();
-  
+
 
   constructor(protected readonly db: DatabaseService, protected readonly afAuth: AngularFireAuth) { }
 
