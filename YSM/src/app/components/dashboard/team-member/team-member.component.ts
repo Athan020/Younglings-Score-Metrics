@@ -12,32 +12,43 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TeamMemberComponent implements OnInit {
    TeamMember;
-   PersonalScores;
-   TeamsAverage;
-   TeamsVelocity;
-   Scoreboard;
-   POsCommets;
-   POsHappiness;
+team;
+  //  PersonalScores;
+  //  TeamsAverage;
+  //  TeamsVelocity;
+  //  Scoreboard;
+  //  POsCommets;
+  //  POsHappiness;
   
 
-   endDate:Date= new Date();
-    startDate:Date;
+  //  endDate:Date= new Date();
+  //   startDate:Date;
 
   constructor(protected readonly db: DatabaseService, protected readonly afAuth: AngularFireAuth) { }
 
   ngOnInit() {
 
-    this.db.teams.subscribe(response => { 
-      response.map(element => {
-       if(element.team === this.afAuth.auth.currentUser.uid){
-         this.TeamMember = element;
-        // console.log(element);
-        // if(element.user   === this.afAuth.auth.currentUser.uid){
-        //    this.teamMember = element;
-        //     console.log(element)
-        } 
+    this.db.users.subscribe(response => 
+      response.map(element => {  
+        if(element.user === this.afAuth.auth.currentUser.uid){
+           this.TeamMember = element;
+          //  console.log(this.TeamMember.name)
+        }
+   
       })
-    })
+    );
+
+    this.db.teams.subscribe(response => {
+      response.map(element => {  
+        if(element.name === this.TeamMember.team){
+           this.team = element;
+           this.db.getTeamSprint(this.team.name);
+          //  this.sprintNum=this.db.teamHighestSprint;
+           //  console.log(element.name)
+          }
+          
+        });
+    });
     
       // this.db.endDate.subscribe(response => {
       //   response.map(element => {  

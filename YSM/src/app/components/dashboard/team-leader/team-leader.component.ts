@@ -35,7 +35,7 @@ export class TeamLeaderComponent implements OnInit {
         }
    
       })
-    )
+    );
 
     this.db.teams.subscribe(response => {
       response.map(element => {  
