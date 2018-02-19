@@ -14,9 +14,9 @@
     <div class="col-md-6">
         <div class="mb-2" *ngFor=" let team of db.teams | async">
             <app-team-ratings *ngIf="teamLeader.team === team.name" [teamData]="team"></app-team-ratings>
+            <app-po-comment *ngIf="teamLeader.team === team.name" [team]="team.name"></app-po-comment>
         </div>
         <app-leaderboard></app-leaderboard>
-
     </div>
 
     <div class="col-md-6">
@@ -52,9 +52,7 @@
 
             <button class="btn btn-primary" (click)="newSprint(db.teamHighestSprint+1)">Start Sprint</button>
             <button class="btn btn-primary" (click)="endSprint()">End Sprint</button>
-
         </div>
-
 
     </div>
 
