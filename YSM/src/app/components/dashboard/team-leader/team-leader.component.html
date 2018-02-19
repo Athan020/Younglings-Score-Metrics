@@ -42,10 +42,13 @@
         <div class="mt-5 p-3 bg-dark">
             <h4 class="text-white"> Sprint {{db.teamHighestSprint+1}}</h4>
             <label class="text-white" for="">Sprint Points</label>
-            <input type="number" [(ngModel)]="sprintPoints" min="0" class="form-control" name="" id="">
+            <input type="number" [(ngModel)]="sprintPoints" min="0" class="form-control mb-3">
 
             <label class="text-white" for="">Sprint Start</label>
             <input type="date" [(ngModel)]="startDate" class="form-control mb-3" name="start-date" id="">
+
+            <label class="text-white" for="">Sprint End</label>
+            <input type="date" [(ngModel)]="endDate" class="form-control mb-3" name="start-date" id="">
 
             <button class="btn btn-primary" (click)="newSprint(db.teamHighestSprint+1)">Start Sprint</button>
             <button class="btn btn-primary" (click)="endSprint()">End Sprint</button>

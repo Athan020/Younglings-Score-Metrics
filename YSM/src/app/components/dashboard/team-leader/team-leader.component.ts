@@ -17,7 +17,7 @@ export class TeamLeaderComponent implements OnInit {
 
   sprintPoints = 0;
   startDate: Date;
-  endDate: Date = new Date();
+  endDate: Date;
 
 
   constructor(protected readonly db: DatabaseService, protected readonly afAuth: AngularFireAuth) {
@@ -71,16 +71,18 @@ export class TeamLeaderComponent implements OnInit {
 
   newSprint(sprintNum) {
 
-    this.db.createSprint(this.teamLeader.team, sprintNum, this.sprintPoints, this.startDate);
+    this.db.createSprint(this.teamLeader.team, sprintNum, this.sprintPoints, this.startDate, this.endDate);
     this.db.getTeamSprint(this.team.name);
     // this.sprintNum=this.db.teamHighestSprint;
     // console.log(this.db.teamHighestSprint);
   }
 
   endSprint() {
+    this.endDate = new Date();
     this.db.editEndDate(this.endDate.toISOString().substr(0, 10), this.team.name);
     this.db.getTeamSprint(this.team.name);
     this.sprintPoints = 0;
+    this.startDate = new Date();
     // this.db.teamHighestSprint++;
     // console.log(this.db.teamHighestSprint);
   }

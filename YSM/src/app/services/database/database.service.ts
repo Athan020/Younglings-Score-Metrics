@@ -30,9 +30,9 @@ export class DatabaseService {
         this.getNumSprints();
     }
 
-    createSprint(teamName, sprintNum, points, startDate) {
+    createSprint(teamName, sprintNum, points, startDate, endDate) {
         this.afStore.collection('sprints').doc(teamName + '-' + sprintNum)
-            .set({ 'endDate': '', 'points': points, 'score': 0, 'startDate': startDate });
+            .set({ 'endDate': endDate, 'points': points, 'score': 0, 'startDate': startDate });
     }
 
     createNewUser(uid: string, role: string, team: string, newTeam: boolean, name: string) {
@@ -220,7 +220,7 @@ export class DatabaseService {
         });
         let flag = true;
         // console.log(this.teamHighestSprint);
-        const teamId = teamName + '-' + this.teamHighestSprint;
+        const teamId = teamName + '-' + (this.teamHighestSprint + 1);
         // console.log(id);
         sprints.subscribe(response => {
             response.map(element => {
