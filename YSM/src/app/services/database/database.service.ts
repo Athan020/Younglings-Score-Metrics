@@ -262,6 +262,7 @@ export class DatabaseService {
             response.map(element => {
                 if (element['name'] === teamName && element['totalSprints'] > this.teamHighestSprint) {
                     this.teamHighestSprint = element['totalSprints'];
+                    // console.log(this.teamHighestSprint)
                 }
             });
         });
