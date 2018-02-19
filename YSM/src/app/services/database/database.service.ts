@@ -13,6 +13,7 @@ export class DatabaseService {
     poAverageHappiness;
     role;
     highestSprintNum;
+    poComment: string;
 
     constructor(
         private afStore: AngularFirestore,
@@ -265,6 +266,15 @@ export class DatabaseService {
                     // console.log(this.teamHighestSprint)
                 }
             });
+        });
+    }
+
+    getLatestPoComment(team: string) {
+        this.getTeamSprint(team);
+        const sprint = this.afStore.collection('sprints').doc(team + '-' + this.highestSprintNum).valueChanges();
+        sprint.subscribe(response => {
+            this.poComment = response['poComment'];
+            console.log(this.poComment);
         });
     }
 
