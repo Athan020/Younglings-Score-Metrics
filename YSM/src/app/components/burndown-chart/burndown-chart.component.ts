@@ -13,29 +13,56 @@ export class BurndownChartComponent implements OnInit {
 
   teamName;
   private chart: AmChart;
-  currentDate: Date
+  currentDate: Date = new Date();
   currentSprint;
-  constructor(private AmCharts: AmChartsService, protected readonly db: DatabaseService,  protected readonly afAuth: AngularFireAuth) { }
+  constructor(private AmCharts: AmChartsService, protected readonly db: DatabaseService, protected readonly afAuth: AngularFireAuth) {
+
+  }
 
   ngOnInit() {
     this.db.users.subscribe(response =>
-      response.map(element =>{
+      response.map(element => {
         if (element.user === this.afAuth.auth.currentUser.uid) {
           this.teamName = element.team;
-          //  console.log(this.teamName)
+
+          this.db.getLatestSprintObject(this.teamName).subscribe(response => {
+            this.currentSprint = response
+            this.displayChart(this.currentSprint.points)
+            console.log(this.currentSprint)
+          }
+          )
         }
+
       }
       )
     );
 
 
     this.db.getTeamSprint(this.teamName);
+
   }
 
-  ngAfterViewInit() {
+
+
+  ngOnDestroy() {
+    if (this.chart) {
+      this.AmCharts.destroyChart(this.chart);
+    }
+  }
+
+  updateChart() {
+    this.AmCharts.updateChart(this.chart, () => {
+      this.chart.dataProvider = [{
+        "category": this.currentDate.toISOString().substr(0, 10),
+        "column-1": 0
+      }];
+    });
+  }
+
+  displayChart(points) {
     this.chart = this.AmCharts.makeChart("chartdiv", {
       "type": "serial",
-      "categoryField": "category",
+      "categoryField": "day",
       "startDuration": 1,
       "categoryAxis": {
         "gridPosition": "start"
@@ -46,7 +73,7 @@ export class BurndownChartComponent implements OnInit {
           "bullet": "round",
           "id": "AmGraph-1",
           "title": "graph 1",
-          "valueField": "column-1"
+          "valueField": "points"
         }
       ],
       "valueAxes": [
@@ -64,25 +91,10 @@ export class BurndownChartComponent implements OnInit {
       ],
       "dataProvider": [
         {
-          "category": "category 1",
-          "column-1": 50
+          "day": this.currentDate.toISOString().substr(0, 10),
+          "points": points
         }
       ]
-    });
-  }
-
-  ngOnDestroy() {
-    if (this.chart) {
-      this.AmCharts.destroyChart(this.chart);
-    }
-  }
-
-  updateChart() {
-    this.AmCharts.updateChart(this.chart, () => {
-      this.chart.dataProvider = [{
-        "category": this.currentDate.toISOString().substr(0, 10),
-        "column-1": 0
-      }];
     });
   }
 }
