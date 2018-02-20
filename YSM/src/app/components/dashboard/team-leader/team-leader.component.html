@@ -1,64 +1,3 @@
-<<<<<<< HEAD
-<div class="container-fluid ">
-    <!-- Banner -->
-    <div class="row">
-        <div class="col-md-6">
-            <h3 *ngIf="teamLeader">{{teamLeader.team}}</h3>
-        </div>
-        <div class="col-md-6 d-flex justify-content-end">
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6">
-            <h2>{{this.afAuth.auth.currentUser.displayName}}'s Dashboard</h2>
-        </div>
-    </div>
-
-    <!-- Edit Velocity -->
-    <div class="row ">
-        <div class="col-md-6">
-            <div class="mb-2" *ngFor=" let team of db.teams | async">
-                <app-team-ratings *ngIf="teamLeader.team === team.name" [teamData]="team"></app-team-ratings>
-            </div>
-            <app-leaderboard></app-leaderboard>
-
-        </div>
-
-        <div class="col-md-6">
-            <div id="accordion">
-                <div class="card">
-                    <div class="card-header bg-dark" id="headingOne">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link text-white" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                Velocity
-              </button>
-                        </h5>
-                    </div>
-
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                        <div class="card-body bg-dark">
-                            <input *ngIf="team" [(ngModel)]="velocity" [value]="team.velocity" min="0" type="number" class="form-control" name="" id="">
-                            <button class="btn btn-primary mt-2" type="submit" (click)="editVelocity(velocity)">Submit</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-5 p-3 bg-dark">
-                <h4 class="text-white"> Sprint {{db.teamHighestSprint+1}}</h4>
-                <label class="text-white" for="">Sprint Points</label>
-                <input type="number" [(ngModel)]="sprintPoints" min="0" class="form-control" name="" id="">
-
-                <label class="text-white" for="">Sprint Start</label>
-                <input type="date" [(ngModel)]="startDate" class="form-control mb-3" name="start-date" id="">
-
-                <button class="btn btn-primary" (click)="newSprint(db.teamHighestSprint+1)">Start Sprint</button>
-                <button class="btn btn-primary" (click)="endSprint()">End Sprint</button>
-
-
-            </div>
-=======
 <div class="container-fluid m-0">
     <!-- Banner -->
     <h3 *ngIf="teamLeader">{{teamLeader.team}}</h3>
@@ -114,14 +53,7 @@
             <button class="btn btn-primary" (click)="newSprint(db.teamHighestSprint+1)">Start Sprint</button>
             <button class="btn btn-primary" (click)="endSprint()">End Sprint</button>
         </div>
->>>>>>> ad9f5630e95898b3b698801cd188a363ac2bea9e
-
-        </div>
-
-<<<<<<< HEAD
-
 
     </div>
-=======
+
 </div>
->>>>>>> ad9f5630e95898b3b698801cd188a363ac2bea9e
