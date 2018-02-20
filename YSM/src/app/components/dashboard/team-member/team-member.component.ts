@@ -12,7 +12,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TeamMemberComponent implements OnInit {
    TeamMember;
-team;
+   team;
   //  PersonalScores;
   //  TeamsAverage;
   //  TeamsVelocity;
@@ -56,7 +56,7 @@ team;
       //        this.teamMember = element;
       //       //  console.log(element)
       //     }
-     
+    
       //   })
       // })
  

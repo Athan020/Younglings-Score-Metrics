@@ -1,4 +1,11 @@
-/* background {
+   .team-member {
+       position: relative;
+       width: 100%;
+       height: 100%;
+       background-color: #8db7fc;
+       text-decoration-color: black;
+   }
+   /* background {
     position: relative;
     width: 1600px;
     height: 760px;

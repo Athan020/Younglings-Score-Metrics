@@ -1,9 +1,11 @@
 <!-- <h2>{{team.name}} Dashboard</h2> -->
+<div class="team-member">
+    <label for="name" type="text" value="MemberName">Member name:{{TeamMember.name}}</label>
+    <app-user-ratings *ngIf="TeamMember.user === this.afAuth.auth.currentUser.uid" [userData]="TeamMember"></app-user-ratings>
+    <app-team-ratings *ngIf="TeamMember.team === team.name" [teamData]="team"></app-team-ratings>
+    <app-leaderboard></app-leaderboard>
+</div>
 
-<label for="name" type="text" value="MemberName">Member name:{{TeamMember.name}}</label>
-<app-user-ratings *ngIf="TeamMember.user === this.afAuth.auth.currentUser.uid" [userData]="TeamMember"></app-user-ratings>
-<app-team-ratings *ngIf="TeamMember.team === team.name" [teamData]="team"></app-team-ratings>
-<app-leaderboard></app-leaderboard>
 <!-- <form action="rating"> -->
 <!-- <input [(ngModel)]="POsHappiness" class="title" type="text" name="PO's" placeholder="PO's happiness">
     <br> -->
