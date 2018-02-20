@@ -1,3 +1,4 @@
+import { PoCommentComponent } from './components/po-comment/po-comment.component';
 import { UserRatingsComponent } from './components/user-ratings/user-ratings.component';
 import { TeamRatingsComponent } from './components/team-ratings/team-ratings.component';
 import { LeaderboardComponent } from './components/leaderboard/leaderboard.component';
@@ -47,7 +48,8 @@ export const firebaseConfig = {
     ManagerComponent,
     LeaderboardComponent,
     TeamRatingsComponent,
-    UserRatingsComponent
+    UserRatingsComponent,
+    PoCommentComponent
   ],
   imports: [
     BrowserModule,

@@ -50,3 +50,21 @@ input[type="radio"]:focus {
     color: #323c47;
     cursor: pointer;
 }
+
+.register {
+    height: 100vh;
+}
+
+.leftBlock {
+    background-color: black;
+}
+
+img {
+    width: 80%;
+    margin-top: 30vh;
+}
+
+.registerForm {
+    padding-top: 8vh;
+    box-shadow: 0px 0px 15px 2px #ffffff;
+}

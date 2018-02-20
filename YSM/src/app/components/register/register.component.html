@@ -1,8 +1,8 @@
-<div class="row justify-content-center m-0">
-    <div class="col-6">
-        <h1>LOGO</h1>
+<div class="row justify-content-center m-0 register">
+    <div class="col-6 leftBlock text-center">
+        <img src="../../../assets/nitro.png" alt="logo" class="mx-auto">
     </div>
-    <div [hidden]="submitted" class="col-6 p-5">
+    <div [hidden]="submitted" class="col-6 registerForm">
         <h1 class="text-center">Register</h1>
         <form (ngSubmit)="onSubmit()" #registerForm='ngForm'>
             <div *ngIf="!this.authentication.loggedInWithGoogle">

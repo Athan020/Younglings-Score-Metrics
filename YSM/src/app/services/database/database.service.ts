@@ -13,6 +13,7 @@ export class DatabaseService {
     poAverageHappiness;
     role;
     highestSprintNum;
+    poComment: string;
 
     constructor(
         private afStore: AngularFirestore,
@@ -30,9 +31,9 @@ export class DatabaseService {
         this.getNumSprints();
     }
 
-    createSprint(teamName, sprintNum, points, startDate) {
+    createSprint(teamName, sprintNum, points, startDate, endDate) {
         this.afStore.collection('sprints').doc(teamName + '-' + sprintNum)
-            .set({ 'endDate': "", 'points': points, 'score': 0, 'startDate': startDate })
+            .set({ 'endDate': endDate, 'points': points, 'score': 0, 'startDate': startDate });
     }
 
     createNewUser(uid: string, role: string, team: string, newTeam: boolean, name: string) {
@@ -220,11 +221,11 @@ export class DatabaseService {
         });
         let flag = true;
         // console.log(this.teamHighestSprint);
-        const id = teamName + '-' + this.teamHighestSprint;
+        const teamId = teamName + '-' + (this.teamHighestSprint + 1);
         // console.log(id);
         sprints.subscribe(response => {
             response.map(element => {
-                if (element.id === id && flag) {
+                if (element.id === teamId && flag) {
                     const key = element.id;
                     this.afStore.collection('sprints').doc(key).update({ 'endDate': endDate });
                     flag = false;
@@ -252,7 +253,7 @@ export class DatabaseService {
                     this.afStore.collection('teams').doc(element.id).update({ 'totalSprints': totalSprints });
                     newFlag = false;
                 }
-            }))
+            }));
     }
 
     getTeamSprint(teamName) {
@@ -264,6 +265,15 @@ export class DatabaseService {
                     this.teamHighestSprint = element['totalSprints'];
                 }
             });
+        });
+    }
+
+    getLatestPoComment(team: string) {
+        this.getTeamSprint(team);
+        const sprint = this.afStore.collection('sprints').doc(team + '-' + this.highestSprintNum).valueChanges();
+        sprint.subscribe(response => {
+            this.poComment = response['poComment'];
+            console.log(this.poComment);
         });
     }
 

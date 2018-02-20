@@ -48,11 +48,11 @@ export class AuthenticationService {
             this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(
                 (success) => {
                     this.updateTable(name, role, team, newTeam);
-                    // this.router.navigate(['/dashboard']);
                 }).catch(
                 (err) => {
                     if (err.message === 'The email address is already in use by another account.') {
                         alert(err.message);
+                        this.router.navigate(['/register']);
                     } else {
                         console.log(err.message);
                     }
