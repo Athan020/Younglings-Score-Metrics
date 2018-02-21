@@ -34,7 +34,7 @@ export class DatabaseService {
 
     createSprint(teamName, sprintNum, points, startDate, endDate) {
         this.afStore.collection('sprints').doc(teamName + '-' + sprintNum)
-            .set({ 'endDate': endDate, 'points': points, 'score': 0, 'startDate': startDate, 'poComment': "" });
+            .set({ 'endDate': endDate, 'points': points, 'score': 0, 'startDate': startDate, 'poComment': "", 'burnDownChart': [{ 'date': startDate, 'points': points }] });
     }
 
     createNewUser(uid: string, role: string, team: string, newTeam: boolean, name: string) {
@@ -285,5 +285,12 @@ export class DatabaseService {
     getLatestSprintObject(teamName) {
         const teamId = teamName + '-' + (this.teamHighestSprint + 1);
         return this.afStore.collection('sprints').doc(teamId).valueChanges();
+    }
+
+    pushPointsToDB(teamName, burnedDownArray) {
+        const teamId = teamName + '-' + (this.teamHighestSprint + 1);
+        this.afStore.collection('sprints').doc(teamId)
+        // .collection('burn-down-chart').doc('day' + (this.teamHighestSprint + 1))
+            .update({'burnDownChart':burnedDownArray})
     }
 }

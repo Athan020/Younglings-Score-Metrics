@@ -18,7 +18,7 @@
 
       </div>
       <app-leaderboard></app-leaderboard>
-      <app-burndown-chart></app-burndown-chart>
+      <app-burndown-chart [pointsBurned]="pointsBurned"></app-burndown-chart>
     </div>
 
     <div class="col-md-6">
@@ -55,6 +55,9 @@
         <button class="btn btn-primary" (click)="newSprint(db.teamHighestSprint+1)">Start Sprint</button>
         <button class="btn btn-primary" (click)="endSprint()">End Sprint</button>
       </div>
+
+<!-- Burndown chart form -->
+      
 
     </div>
   </div>

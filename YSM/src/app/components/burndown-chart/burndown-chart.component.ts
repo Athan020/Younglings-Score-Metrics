@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AmChart, AmChartsService } from '@amcharts/amcharts3-angular';
 import { DatabaseService } from '../../services/database/database.service';
 import { element } from 'protractor';
@@ -15,6 +15,11 @@ export class BurndownChartComponent implements OnInit {
   private chart: AmChart;
   currentDate: Date = new Date();
   currentSprint;
+
+  @Input() pointsBurned: number;
+
+  burnedDownArray: any[];
+
   constructor(private AmCharts: AmChartsService, protected readonly db: DatabaseService, protected readonly afAuth: AngularFireAuth) {
 
   }
@@ -27,8 +32,9 @@ export class BurndownChartComponent implements OnInit {
 
           this.db.getLatestSprintObject(this.teamName).subscribe(response => {
             this.currentSprint = response
-            this.displayChart(this.currentSprint.points)
-            console.log(this.currentSprint)
+            this.burnedDownArray=this.currentSprint.burnDownChart;
+            this.displayChart(this.currentSprint.burnDownChart)
+            console.log(this.currentSprint.burnDownChart)
           }
           )
         }
@@ -51,18 +57,31 @@ export class BurndownChartComponent implements OnInit {
   }
 
   updateChart() {
-    this.AmCharts.updateChart(this.chart, () => {
-      this.chart.dataProvider = [{
-        "category": this.currentDate.toISOString().substr(0, 10),
-        "column-1": 0
-      }];
+    const points=this.burnedDownArray[this.burnedDownArray.length-1].points-this.pointsBurned;
+    this.burnedDownArray.push({
+      "date": this.currentDate.toISOString().substr(0, 10),
+      "points": points
     });
+    
+    this.AmCharts.updateChart(this.chart, () => {
+      this.chart.dataProvider = this.burnedDownArray;
+    });
+
+    this.db.pushPointsToDB(this.teamName,this.burnedDownArray)
   }
 
-  displayChart(points) {
+  displayChart(chartArray) {
+    // this.burnedDownArray = [
+    //   {
+    //     "day": this.currentDate.toISOString().substr(0, 10),
+    //     "points": points
+    //   }
+    // ]
+
+
     this.chart = this.AmCharts.makeChart("chartdiv", {
       "type": "serial",
-      "categoryField": "day",
+      "categoryField": "date",
       "startDuration": 1,
       "categoryAxis": {
         "gridPosition": "start"
@@ -89,12 +108,7 @@ export class BurndownChartComponent implements OnInit {
           "text": "Sprint 1 Burndown Chart"
         }
       ],
-      "dataProvider": [
-        {
-          "day": this.currentDate.toISOString().substr(0, 10),
-          "points": points
-        }
-      ]
+      "dataProvider": chartArray
     });
   }
 }
