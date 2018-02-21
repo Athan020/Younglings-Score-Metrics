@@ -15,10 +15,7 @@ export class DatabaseService {
     highestSprintNum;
     poComment: string;
 
-    constructor(
-        private afStore: AngularFirestore,
-        private afAuth: AngularFireAuth
-    ) {
+    constructor(private afStore: AngularFirestore, private afAuth: AngularFireAuth) {
         this.users = afStore.collection('users').valueChanges();
         this.teams = afStore.collection('teams').valueChanges();
         this.sprints = afStore.collection('sprints', ref => ref.orderBy('score', 'desc')).snapshotChanges().map(actions => {
@@ -29,11 +26,15 @@ export class DatabaseService {
             });
         });
         this.getNumSprints();
+        // this.checkSprints();
     }
 
     createSprint(teamName, sprintNum, points, startDate, endDate) {
         this.afStore.collection('sprints').doc(teamName + '-' + sprintNum)
-            .set({ 'endDate': endDate, 'points': points, 'score': 0, 'startDate': startDate });
+            .set({ 'endDate': endDate, 'points': points, 'score': 0, 'startDate': startDate, 'open': false, 'poComment': '' });
+        if (sprintNum > 1) {
+            this.afStore.collection('sprints').doc(teamName + '-' + (sprintNum - 1)).update({ 'open': true });
+        }
     }
 
     createNewUser(uid: string, role: string, team: string, newTeam: boolean, name: string) {
@@ -219,15 +220,17 @@ export class DatabaseService {
                 return { id, ...data };
             });
         });
+
         let flag = true;
-        // console.log(this.teamHighestSprint);
         const teamId = teamName + '-' + (this.teamHighestSprint + 1);
-        // console.log(id);
+        const prevSprintId = teamName + '-' + this.teamHighestSprint;
+
         sprints.subscribe(response => {
             response.map(element => {
                 if (element.id === teamId && flag) {
                     const key = element.id;
-                    this.afStore.collection('sprints').doc(key).update({ 'endDate': endDate });
+                    this.afStore.collection('sprints').doc(key).update({ 'endDate': endDate, 'open': true });
+                    this.afStore.collection('sprints').doc(prevSprintId).update({ 'open': false });
                     flag = false;
                 }
             });
@@ -244,16 +247,17 @@ export class DatabaseService {
 
         let newFlag = true;
         let totalSprints = 0;
-        teams.subscribe(response =>
-
+        teams.subscribe(response => {
             response.map(element => {
                 if (element.name === teamName && newFlag) {
                     totalSprints = element.totalSprints;
                     totalSprints++;
                     this.afStore.collection('teams').doc(element.id).update({ 'totalSprints': totalSprints });
+                    this.removeTeamFromUsers(teamName);
                     newFlag = false;
                 }
-            }));
+            });
+        });
     }
 
     getTeamSprint(teamName) {
@@ -273,8 +277,70 @@ export class DatabaseService {
         const sprint = this.afStore.collection('sprints').doc(team + '-' + this.highestSprintNum).valueChanges();
         sprint.subscribe(response => {
             this.poComment = response['poComment'];
-            console.log(this.poComment);
         });
+    }
+
+    rateTeam(name, rating) {
+        const teams: Observable<any> = this.afStore.collection('teams').snapshotChanges().map(actions => {
+            return actions.map(a => {
+                const data = a.payload.doc.data();
+                const id = a.payload.doc.id;
+                return { id, ...data };
+            });
+        });
+        const users: Observable<any> = this.afStore.collection('users').snapshotChanges().map(actions => {
+            return actions.map(a => {
+                const data = a.payload.doc.data();
+                const id = a.payload.doc.id;
+                return { id, ...data };
+            });
+        });
+
+        let flag = true;
+        teams.subscribe(response => {
+            response.map(element => {
+                if (element.name === name && flag) {
+                    const updatedRating = element.rating + rating;
+                    this.afStore.collection('teams').doc(element.id).update({ rating: updatedRating });
+                    let innerFlag = true;
+                    users.subscribe(res => {
+                        res.map(e => {
+                            if (e.user === this.afAuth.auth.currentUser.uid && innerFlag) {
+                                const ratedTeams = e.teamsRated;
+                                ratedTeams.push(element.name);
+                                this.afStore.collection('users').doc(e.id).update({ teamsRated: ratedTeams });
+                                innerFlag = false;
+                            }
+                        });
+                    });
+                    flag = false;
+                }
+            });
+        });
+    }
+
+    removeTeamFromUsers(teamName) {
+        const users: Observable<any> = this.afStore.collection('users').snapshotChanges().map(actions => {
+            return actions.map(a => {
+                const data = a.payload.doc.data();
+                const id = a.payload.doc.id;
+                return { id, ...data };
+            });
+        });
+        users.subscribe(response => {
+            response.map(element => {
+                if (element.teamsRated !== undefined) {
+                    const arr = [];
+                    element.teamsRated.forEach(el => {
+                        if (el !== teamName) {
+                            arr.push(el);
+                        }
+                    });
+                    this.afStore.collection('users').doc(element.id).update({ teamsRated: arr });
+                }
+            });
+        });
+
     }
 
 }

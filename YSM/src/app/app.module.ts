@@ -24,6 +24,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { TeamMemberComponent } from './components/dashboard/team-member/team-member.component';
 import { TeamLeaderComponent } from './components/dashboard/team-leader/team-leader.component';
 import { ManagerComponent } from './components/dashboard/manager/manager.component';
+import { RateTeamsComponent } from './components/rate-teams/rate-teams.component';
 
 
 export const firebaseConfig = {
@@ -49,7 +50,8 @@ export const firebaseConfig = {
     LeaderboardComponent,
     TeamRatingsComponent,
     UserRatingsComponent,
-    PoCommentComponent
+    PoCommentComponent,
+    RateTeamsComponent
   ],
   imports: [
     BrowserModule,

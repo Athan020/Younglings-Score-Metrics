@@ -18,7 +18,7 @@ export class TeamRatingsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.average = Math.round((this.teamData.rating / this.teamData.totalSprints) * 10) / 10;
+    this.average = Math.round((this.teamData.rating / this.teamData.totalSprints) / 2 * 10) / 10;
   }
 
 }

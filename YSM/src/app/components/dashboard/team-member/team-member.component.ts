@@ -11,15 +11,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./team-member.component.css']
 })
 export class TeamMemberComponent implements OnInit {
-   TeamMember;
-   team;
+  TeamMember;
+  team;
   //  PersonalScores;
   //  TeamsAverage;
   //  TeamsVelocity;
   //  Scoreboard;
   //  POsCommets;
   //  POsHappiness;
-  
+
 
   //  endDate:Date= new Date();
   //   startDate:Date;
@@ -28,43 +28,43 @@ export class TeamMemberComponent implements OnInit {
 
   ngOnInit() {
 
-    this.db.users.subscribe(response => 
-      response.map(element => {  
-        if(element.user === this.afAuth.auth.currentUser.uid){
-           this.TeamMember = element;
+    this.db.users.subscribe(response =>
+      response.map(element => {
+        if (element.user === this.afAuth.auth.currentUser.uid) {
+          this.TeamMember = element;
           //  console.log(this.TeamMember.name)
         }
-   
+
       })
     );
 
     this.db.teams.subscribe(response => {
-      response.map(element => {  
-        if(element.name === this.TeamMember.team){
-           this.team = element;
-           this.db.getTeamSprint(this.team.name);
+      response.map(element => {
+        if (element.name === this.TeamMember.team) {
+          this.team = element;
+          this.db.getTeamSprint(this.team.name);
           //  this.sprintNum=this.db.teamHighestSprint;
-           //  console.log(element.name)
-          }
-          
-        });
-    });
-    
-      // this.db.endDate.subscribe(response => {
-      //   response.map(element => {  
-      //     if(element.user === this.afAuth.auth.currentUser.uid){
-      //        this.teamMember = element;
-      //       //  console.log(element)
-      //     }
-    
-      //   })
-      // })
- 
-    }
+          //  console.log(element.name)
+        }
 
-  onSubmit(){
-    
-  }    
+      });
+    });
+
+    // this.db.endDate.subscribe(response => {
+    //   response.map(element => {
+    //     if(element.user === this.afAuth.auth.currentUser.uid){
+    //        this.teamMember = element;
+    //       //  console.log(element)
+    //     }
+
+    //   })
+    // })
+
   }
+
+  onSubmit() {
+
+  }
+}
 
 
