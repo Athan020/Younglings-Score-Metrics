@@ -14,6 +14,7 @@ export class DatabaseService {
     role;
     highestSprintNum;
     poComment: string;
+    currentLatestSprintObject;
 
     constructor(
         private afStore: AngularFirestore,
@@ -33,7 +34,7 @@ export class DatabaseService {
 
     createSprint(teamName, sprintNum, points, startDate, endDate) {
         this.afStore.collection('sprints').doc(teamName + '-' + sprintNum)
-            .set({ 'endDate': endDate, 'points': points, 'score': 0, 'startDate': startDate });
+            .set({ 'endDate': endDate, 'points': points, 'score': 0, 'startDate': startDate, 'poComment': "", 'burnDownChart': [{ 'date': startDate, 'points': points }] });
     }
 
     createNewUser(uid: string, role: string, team: string, newTeam: boolean, name: string) {
@@ -263,6 +264,7 @@ export class DatabaseService {
             response.map(element => {
                 if (element['name'] === teamName && element['totalSprints'] > this.teamHighestSprint) {
                     this.teamHighestSprint = element['totalSprints'];
+                    // console.log(this.teamHighestSprint)
                 }
             });
         });
@@ -270,11 +272,25 @@ export class DatabaseService {
 
     getLatestPoComment(team: string) {
         this.getTeamSprint(team);
-        const sprint = this.afStore.collection('sprints').doc(team + '-' + this.highestSprintNum).valueChanges();
+        const sprint = this.afStore.collection('sprints').doc(team + '-' + this.teamHighestSprint).valueChanges();
         sprint.subscribe(response => {
-            this.poComment = response['poComment'];
-            console.log(this.poComment);
+            if (response['poComment'] !== null) {
+                this.poComment = response['poComment'];
+                console.log(this.poComment);
+            }
+
         });
     }
 
+    getLatestSprintObject(teamName) {
+        const teamId = teamName + '-' + (this.teamHighestSprint + 1);
+        return this.afStore.collection('sprints').doc(teamId).valueChanges();
+    }
+
+    pushPointsToDB(teamName, burnedDownArray) {
+        const teamId = teamName + '-' + (this.teamHighestSprint + 1);
+        this.afStore.collection('sprints').doc(teamId)
+        // .collection('burn-down-chart').doc('day' + (this.teamHighestSprint + 1))
+            .update({'burnDownChart':burnedDownArray})
+    }
 }
