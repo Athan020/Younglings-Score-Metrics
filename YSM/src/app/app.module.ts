@@ -26,6 +26,8 @@ import { TeamLeaderComponent } from './components/dashboard/team-leader/team-lea
 import { ManagerComponent } from './components/dashboard/manager/manager.component';
 import { RateTeamsComponent } from './components/rate-teams/rate-teams.component';
 
+import { AmChartsModule } from '@amcharts/amcharts3-angular';
+import { BurndownChartComponent } from './components/burndown-chart/burndown-chart.component';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyAMd8N_5k9klj1df29Lr_xihZKXYagcvbI',
@@ -51,7 +53,8 @@ export const firebaseConfig = {
     TeamRatingsComponent,
     UserRatingsComponent,
     PoCommentComponent,
-    RateTeamsComponent
+    RateTeamsComponent,
+    BurndownChartComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +64,8 @@ export const firebaseConfig = {
     AngularFireAuthModule,
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    AmChartsModule
   ],
   providers: [AngularFireAuth, AuthguardService, AuthenticationService, DatabaseService],
   bootstrap: [AppComponent]

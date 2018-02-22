@@ -19,7 +19,6 @@ export class TeamLeaderComponent implements OnInit {
   startDate: Date;
   endDate: Date;
 
-
   constructor(protected readonly db: DatabaseService, protected readonly afAuth: AngularFireAuth) {
     this.db.users.subscribe(response =>
       response.map(element => {
