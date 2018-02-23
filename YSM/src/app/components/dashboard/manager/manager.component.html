@@ -1,10 +1,12 @@
 <div class="row justify-content-center m-0 pt-5">
-    <div class="col-12 col-md-6 pb-3">
-        <h3 class="leaderboard-heading text-center">Leaderboard:</h3>
-        <app-leaderboard *ngIf="db.highestSprintNum !== undefined && db.sprints !== undefined"></app-leaderboard>
+    <div class="col-12 col-md-6">
+        <h3 class="mb-4 text-center">Leaderboard:</h3>
+        <div class="">
+            <app-leaderboard *ngIf="db.highestSprintNum !== undefined && db.sprints !== undefined"></app-leaderboard>
+        </div>
     </div>
     <div class="col-12 col-md-6">
-        <select name="info" id="info" [(ngModel)]="info" class="form-control col-md-4 mx-auto bg-dark text-light">
+        <!-- <select name="info" id="info" [(ngModel)]="info" class="form-control col-md-4 mx-auto bg-dark text-light">
                 <option value="Team information">Team information</option>
                 <option value="Member information">Member information</option>
                 <option value="PO information">PO information</option>
@@ -14,15 +16,19 @@
                 <app-team-ratings [teamData]="team" class="pb-2"></app-team-ratings>
             </div>
         </div>
-        <div *ngIf="info === 'Member information'">
+        <div *ngIf="info === 'Member information'"> -->
+        <h3 class="mb-4 text-center">Team Information:</h3>
+        <div *ngFor="let team of db.teams | async" class="mb-3">
+            <app-team-ratings [teamData]="team" class="pb-2"></app-team-ratings>
             <div *ngFor="let user of db.users | async">
-                <app-user-ratings *ngIf="user.role == 'leader' || user.role == 'member'" class="pb-2" [userData]="user"></app-user-ratings>
+                <app-user-ratings *ngIf="user.team == team.name" class="pb-2" [userData]="user"></app-user-ratings>
             </div>
         </div>
+        <!-- </div>
         <div *ngIf="info === 'PO information'">
             <div *ngFor="let po of db.users | async">
                 <app-user-ratings *ngIf="po.role == 'po'" [userData]="po" class="pb-2"></app-user-ratings>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>

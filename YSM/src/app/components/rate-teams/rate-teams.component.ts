@@ -24,7 +24,9 @@ export class RateTeamsComponent implements OnInit {
             let flag = false;
             r.map(el => {
               if (el.user === auth.getUID()) {
-                if (!el.teamsRated.includes(team.name)) {
+                const includesTeam = el.teamsRated.includes(team.name);
+                console.log(includesTeam);
+                if (includesTeam) {
                   res.map(e => {
                     if (e.id.includes(team.name) && e.open) {
                       this.sprintNum = e.id.split('-')[1];

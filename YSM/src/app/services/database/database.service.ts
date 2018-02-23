@@ -33,7 +33,7 @@ export class DatabaseService {
     createSprint(teamName, sprintNum, points, startDate, endDate) {
         // tslint:disable-next-line:max-line-length
         this.afStore.collection('sprints').doc(teamName + '-' + sprintNum)
-            .set({ 'endDate': endDate, 'points': points, 'score': 0, 'startDate': startDate, 'poComment': '', 'burnDownChart': [{ 'date': startDate, 'points': points }], 'open': false });
+            .set({ 'endDate': endDate, 'points': points, 'score': 0, 'startDate': startDate, 'poComment': '', 'burnDownChart': [{ 'date': startDate, 'points': points }], 'open': false, 'ratingsReceived': 0 });
         if (sprintNum > 1) {
             this.afStore.collection('sprints').doc(teamName + '-' + (sprintNum - 1)).update({ 'open': true });
         }
@@ -55,8 +55,6 @@ export class DatabaseService {
                     'user': uid,
                     'role': role,
                     'team': team,
-                    'previousRating': 0,
-                    'rating': 0,
                     'name': name
                 });
             if (role === 'leader' && newTeam) {
@@ -67,8 +65,6 @@ export class DatabaseService {
                         'name': team,
                         'leaders': [uid],
                         'velocity': 0,
-                        'previousRating': 0,
-                        'rating': 0,
                         'totalSprints': 0
                     });
             } else {
@@ -285,7 +281,8 @@ export class DatabaseService {
         });
     }
 
-    rateTeam(name, rating) {
+    rateTeam(name: string, rating: number) {
+        this.getTeamSprint(name);
         const teams: Observable<any> = this.afStore.collection('teams').snapshotChanges().map(actions => {
             return actions.map(a => {
                 const data = a.payload.doc.data();
@@ -300,13 +297,29 @@ export class DatabaseService {
                 return { id, ...data };
             });
         });
+        const sprints: Observable<any> = this.afStore.collection('sprints').snapshotChanges().map(actions => {
+            return actions.map(a => {
+                const data = a.payload.doc.data();
+                const id = a.payload.doc.id;
+                return { id, ...data };
+            });
+        });
 
         let flag = true;
         teams.subscribe(response => {
             response.map(element => {
-                if (element.name === name && flag) {
-                    const updatedRating = element.rating + rating;
-                    this.afStore.collection('teams').doc(element.id).update({ rating: updatedRating });
+                if (element.name === name) {
+                    sprints.subscribe(r => {
+                        r.map(el => {
+                            if (el.id === (element.name + '-' + this.teamHighestSprint) && flag) {
+                                const updatedRating = el.score + rating;
+                                const totalRatings = el.ratingsReceived + 1;
+                                // tslint:disable-next-line:max-line-length
+                                this.afStore.collection('sprints').doc(element.name + '-' + this.teamHighestSprint).update({ 'score': updatedRating, 'ratingsReceived': totalRatings });
+                                flag = false;
+                            }
+                        });
+                    });
                     let innerFlag = true;
                     users.subscribe(res => {
                         res.map(e => {
@@ -318,7 +331,6 @@ export class DatabaseService {
                             }
                         });
                     });
-                    flag = false;
                 }
             });
         });

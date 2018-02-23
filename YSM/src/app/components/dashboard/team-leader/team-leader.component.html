@@ -15,15 +15,18 @@
             <div class="mb-2" *ngFor=" let team of db.teams | async">
                 <app-team-ratings *ngIf="teamLeader.team === team.name" [teamData]="team"></app-team-ratings>
                 <app-po-comment *ngIf="teamLeader.team === team.name" [team]="team.name"></app-po-comment>
-
             </div>
             <app-leaderboard></app-leaderboard>
-            <app-burndown-chart></app-burndown-chart>
+            <div *ngFor="let sprint of db.sprints | async">
+                <div *ngIf="sprint.id.split('-')[1] == (db.teamHighestSprint+1)">
+                    <app-burndown-chart *ngIf="!sprint.open"></app-burndown-chart>
+                </div>
+            </div>
         </div>
 
         <div class="col-md-6">
             <app-rate-teams></app-rate-teams>
-            <div id="accordion">
+            <!-- <div id="accordion" class="mb-5">
                 <div class="card">
                     <div class="card-header bg-dark" id="headingOne">
                         <h5 class="mb-0">
@@ -40,9 +43,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
-            <div class="mt-5 p-3 bg-dark">
+            <div class="p-3 bg-dark">
                 <h4 class="text-white"> Sprint {{db.teamHighestSprint+1}}</h4>
                 <label class="text-white" for="">Sprint Points</label>
                 <input type="number" [(ngModel)]="sprintPoints" min="0" class="form-control mb-3">

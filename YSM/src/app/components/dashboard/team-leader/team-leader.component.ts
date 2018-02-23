@@ -24,6 +24,7 @@ export class TeamLeaderComponent implements OnInit {
       response.map(element => {
         if (element.user === this.afAuth.auth.currentUser.uid) {
           this.teamLeader = element;
+          // this.db.getTeamSprint(this.teamLeader.team);
           //  console.log(element)
         }
 
