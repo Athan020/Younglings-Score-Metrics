@@ -1,15 +1,15 @@
 <div *ngIf="userData.role == 'leader' || userData.role == 'member'" class="row justify-content-center m-0 border p-2 bg-dark text-light">
     <h4 class="col-12">{{userData.name}}</h4>
-    <div class="col-md-6">
-        Average: {{average}}
-    </div>
-    <div class="col-md-6">
-        Previous rating: {{userData.previousRating}}
+    <div class="col-12">
+        Role: {{userData.role}}
     </div>
 </div>
 <div *ngIf="userData.role == 'po'" class="row justify-content-center m-0 border p-2 bg-dark text-light">
     <h4 class="col-12">{{userData.name}}</h4>
-    <div class="col-12">
+    <div class="col-md-6">
+        Role: Product Owner
+    </div>
+    <div class="col-md-6">
         Average happiness: {{db.poAverageHappiness}}
     </div>
 </div>

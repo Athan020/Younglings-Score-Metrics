@@ -2,8 +2,12 @@
 <div class="team-member">
     <label for="name" type="text" value="MemberName">Member name:{{TeamMember.name}}</label>
     <app-user-ratings *ngIf="TeamMember.user === this.afAuth.auth.currentUser.uid" [userData]="TeamMember"></app-user-ratings>
-    <app-team-ratings *ngIf="TeamMember.team === team.name" [teamData]="team"></app-team-ratings>
+    <div class="mb-2" *ngFor=" let team of db.teams | async">
+        <app-team-ratings *ngIf="TeamMember.team === team.name" [teamData]="team"></app-team-ratings>
+        <app-po-comment *ngIf="TeamMember.team === team.name" [team]="team.name"></app-po-comment>
+    </div>
     <app-leaderboard></app-leaderboard>
+    <app-rate-teams></app-rate-teams>
 </div>
 
 <!-- <form action="rating"> -->

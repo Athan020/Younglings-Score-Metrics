@@ -20,22 +20,20 @@ export class TeamLeaderComponent implements OnInit {
   endDate: Date;
 
   constructor(protected readonly db: DatabaseService, protected readonly afAuth: AngularFireAuth) {
-
-
-  }
-
-  ngOnInit() {
-
     this.db.users.subscribe(response =>
       response.map(element => {
         if (element.user === this.afAuth.auth.currentUser.uid) {
           this.teamLeader = element;
+          // this.db.getTeamSprint(this.teamLeader.team);
           //  console.log(element)
         }
 
       })
     );
 
+  }
+
+  ngOnInit() {
     this.db.teams.subscribe(response => {
       response.map(element => {
         if (element.name === this.teamLeader.team) {
@@ -54,7 +52,6 @@ export class TeamLeaderComponent implements OnInit {
         this.currentSprint = element;
         //  console.log(element)
         // }
-
       })
     );
 
