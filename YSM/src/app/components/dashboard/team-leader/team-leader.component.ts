@@ -54,6 +54,8 @@ export class TeamLeaderComponent implements OnInit {
           this.startDate = element.startDate;
           this.endDate = element.endDate;
           this.sprintPoints = element.points;
+        } else if (element.id === (this.team.name + '-' + this.db.teamHighestSprint) && !element.open) {
+          this.newSprintText = ' (New sprint!)';
         }
       })
     );

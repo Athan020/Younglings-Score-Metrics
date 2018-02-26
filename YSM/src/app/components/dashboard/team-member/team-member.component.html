@@ -14,6 +14,9 @@
                 <app-po-comment *ngIf="TeamMember.team === team.name" [team]="team.name"></app-po-comment>
             </div>
         </div>
-        <app-leaderboard class="col-md-6"></app-leaderboard>
+        <div class="col-md-6">
+            <app-rate-teams></app-rate-teams>
+            <app-leaderboard></app-leaderboard>
+        </div>
     </div>
 </div>

@@ -265,11 +265,10 @@ export class DatabaseService {
     getTeamSprint(teamName) {
         const teams = this.afStore.collection('teams', ref => ref.orderBy('totalSprints', 'desc')).valueChanges();
         this.teamHighestSprint = 0;
-        const sub = teams.subscribe(response => {
+        teams.subscribe(response => {
             response.map(element => {
                 if (element['name'] === teamName) {
                     this.teamHighestSprint = element['totalSprints'];
-                    sub.unsubscribe();
                 }
             });
         });

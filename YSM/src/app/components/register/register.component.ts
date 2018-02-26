@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
     this.authentication.signUp(this.email, this.password, this.name, this.role, this.team, this.newTeam);
-    this.router.navigate(['/register']);
+    this.router.navigate(['/dashboard']);
   }
 
   setNewTeam(newTeam) {
