@@ -1,3 +1,4 @@
+import { PoCommentComponent } from './components/po-comment/po-comment.component';
 import { UserRatingsComponent } from './components/user-ratings/user-ratings.component';
 import { TeamRatingsComponent } from './components/team-ratings/team-ratings.component';
 import { LeaderboardComponent } from './components/leaderboard/leaderboard.component';
@@ -23,7 +24,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { TeamMemberComponent } from './components/dashboard/team-member/team-member.component';
 import { TeamLeaderComponent } from './components/dashboard/team-leader/team-leader.component';
 import { ManagerComponent } from './components/dashboard/manager/manager.component';
-
+import { AmChartsModule } from '@amcharts/amcharts3-angular';
+import { BurndownChartComponent } from './components/burndown-chart/burndown-chart.component';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyAMd8N_5k9klj1df29Lr_xihZKXYagcvbI',
@@ -47,7 +49,9 @@ export const firebaseConfig = {
     ManagerComponent,
     LeaderboardComponent,
     TeamRatingsComponent,
-    UserRatingsComponent
+    UserRatingsComponent,
+    BurndownChartComponent,
+    PoCommentComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +61,8 @@ export const firebaseConfig = {
     AngularFireAuthModule,
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    AmChartsModule
   ],
   providers: [AngularFireAuth, AuthguardService, AuthenticationService, DatabaseService],
   bootstrap: [AppComponent]

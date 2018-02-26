@@ -6,15 +6,16 @@ import { AngularFirestore } from 'angularfire2/firestore';
 
 @Injectable()
 export class DatabaseService {
-  teamHighestSprint: number;
-  users: Observable<any>;
-  teams: Observable<any>;
-  sprints: Observable<any>;
-  currentSprint: Observable<any>;
-  poAverageHappiness;
-  role;
-  highestSprintNum;
-  poTeam;
+    teamHighestSprint: number;
+    users: Observable<any>;
+    teams: Observable<any>;
+    sprints: Observable<any>;
+    currentSprint: Observable<any>;
+    poAverageHappiness;
+    role;
+    highestSprintNum;
+    poComment: string;
+    currentLatestSprintObject;
 
   constructor(
     private afStore: AngularFirestore,
@@ -35,12 +36,12 @@ export class DatabaseService {
     this.getNumSprints();
   }
 
-  createSprint(teamName, sprintNum, points, startDate) {
-    this.afStore
-      .collection('sprints')
-      .doc(teamName + '-' + sprintNum)
-      .set({ endDate: '', points: points, score: 0, startDate: startDate });
-  }
+  // createSprint(teamName, sprintNum, points, startDate) {
+  //   this.afStore
+  //     .collection('sprints')
+  //     .doc(teamName + '-' + sprintNum)
+  //     .set({ endDate: '', points: points, score: 0, startDate: startDate });
+  // }
 
   createNewUser(
     uid: string,
@@ -84,11 +85,13 @@ export class DatabaseService {
     }
   }
 
-  pushToTeams(team: string, uid: string, chosenRole: string) {
-    let role = chosenRole;
-    if (role === 'leader' || role === 'po') {
-      role += 's';
+    createSprint(teamName, sprintNum, points, startDate, endDate) {
+        this.afStore.collection('sprints').doc(teamName + '-' + sprintNum)
+            // tslint:disable-next-line:max-line-length
+            .set({ 'endDate': endDate, 'points': points, 'score': 0, 'startDate': startDate, 'poComment': '', 'burnDownChart': [{ 'date': startDate, 'points': points }] });
     }
+
+    pushToTeams(team, uid, role) {
     const teams: Observable<any> = this.afStore
       .collection('teams')
       .snapshotChanges()
@@ -228,17 +231,39 @@ export class DatabaseService {
     });
   }
 
-  editVelocity(velocity: number, teamName: string) {
-    const teams: Observable<any> = this.afStore
-      .collection('teams')
-      .snapshotChanges()
-      .map(actions => {
-        return actions.map(a => {
-          const data = a.payload.doc.data();
-          const id = a.payload.doc.id;
-          return { id, ...data };
-        });
-      });
+  //   editEndDate(endDate: string, teamName: string) {
+  //       const sprints: Observable<any> = this.afStore.collection('sprints').snapshotChanges().map(actions => {
+  //           return actions.map(a => {
+  //               const data = a.payload.doc.data();
+  //               const id = a.payload.doc.id;
+  //               return { id, ...data };
+  //           });
+  //       });
+  //       let flag = true;
+  //       // console.log(this.teamHighestSprint);
+  //       const teamId = teamName + '-' + (this.teamHighestSprint + 1);
+  //       // console.log(id);
+  //       sprints.subscribe(response => {
+  //           response.map(element => {
+  //               if (element.id === teamId && flag) {
+  //                   const key = element.id;
+  //                   this.afStore.collection('sprints').doc(key).update({ 'endDate': endDate });
+  //                   flag = false;
+  //               }
+  //           });
+  //       });
+  //     });
+editVelocity(teamName , velocity) {
+  const teams: Observable<any> = this.afStore
+  .collection('teams')
+  .snapshotChanges()
+  .map(actions => {
+    return actions.map(a => {
+      const data = a.payload.doc.data();
+      const id = a.payload.doc.id;
+      return { id, ...data };
+    });
+  });
 
     let flag = true;
     teams.subscribe(response => {
@@ -254,6 +279,7 @@ export class DatabaseService {
       });
     });
   }
+
 
   editEndDate(endDate: string, teamName: string) {
     const sprints: Observable<any> = this.afStore
@@ -328,4 +354,27 @@ export class DatabaseService {
     });
   }
 
+    getLatestPoComment(team: string) {
+        this.getTeamSprint(team);
+        const sprint = this.afStore.collection('sprints').doc(team + '-' + this.teamHighestSprint).valueChanges();
+        sprint.subscribe(response => {
+            if (response['poComment'] !== null) {
+                this.poComment = response['poComment'];
+                console.log(this.poComment);
+            }
+
+        });
+    }
+
+    getLatestSprintObject(teamName) {
+        const teamId = teamName + '-' + (this.teamHighestSprint + 1);
+        return this.afStore.collection('sprints').doc(teamId).valueChanges();
+    }
+
+    pushPointsToDB(teamName, burnedDownArray) {
+        const teamId = teamName + '-' + (this.teamHighestSprint + 1);
+        this.afStore.collection('sprints').doc(teamId)
+        // .collection('burn-down-chart').doc('day' + (this.teamHighestSprint + 1))
+            .update({'burnDownChart': burnedDownArray});
+    }
 }

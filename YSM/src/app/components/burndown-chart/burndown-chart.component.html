@@ -1,0 +1,11 @@
+<div id="chartdiv" [style.width.%]="100" [style.height.px]="500"></div>
+
+
+<div class="mt-5 p-3 bg-dark">
+    <h4 class="text-white"> Update Burn Down Chart</h4>
+
+    <label class="text-white" for="">Points burned</label>
+<input [(ngModel)]="pointsBurned" type="number"  min="0" class="form-control mb-3">
+<button type="submit" (click)="updateChart()">Update Chart</button>
+
+  </div>
