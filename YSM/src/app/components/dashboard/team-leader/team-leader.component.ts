@@ -18,23 +18,22 @@ export class TeamLeaderComponent implements OnInit {
   sprintPoints = 0;
   startDate: Date;
   endDate: Date;
+  newSprintText = ' (New sprint!)';
 
   constructor(protected readonly db: DatabaseService, protected readonly afAuth: AngularFireAuth) {
-
-
-  }
-
-  ngOnInit() {
-
     this.db.users.subscribe(response =>
       response.map(element => {
         if (element.user === this.afAuth.auth.currentUser.uid) {
           this.teamLeader = element;
+          // this.db.getTeamSprint(this.teamLeader.team);
           //  console.log(element)
         }
       })
     );
 
+  }
+
+  ngOnInit() {
     this.db.teams.subscribe(response => {
       response.map(element => {
         if (element.name === this.teamLeader.team) {
@@ -48,10 +47,14 @@ export class TeamLeaderComponent implements OnInit {
 
     this.db.sprints.subscribe(response =>
       response.map(element => {
-        // if(element.poComment === 'WORK GOTDAMMIT'){
-        this.currentSprint = element;
-        //  console.log(element)
-        // }
+        if (element.id === (this.team.name + '-' + (this.db.teamHighestSprint + 1)) && !element.open) {
+          this.newSprintText = ' (Current sprint)';
+          this.startDate = element.startDate;
+          this.endDate = element.endDate;
+          this.sprintPoints = element.points;
+        } else if (element.id === (this.team.name + '-' + this.db.teamHighestSprint) && !element.open) {
+          this.newSprintText = ' (New sprint!)';
+        }
       })
     );
 
@@ -66,9 +69,8 @@ export class TeamLeaderComponent implements OnInit {
   }
 
   newSprint(sprintNum) {
-
     this.db.createSprint(this.teamLeader.team, sprintNum, this.sprintPoints, this.startDate, this.endDate);
-    this.db.getTeamSprint(this.team.name);
+    // this.db.getTeamSprint(this.team.name);
     // this.sprintNum=this.db.teamHighestSprint;
     // console.log(this.db.teamHighestSprint);
   }

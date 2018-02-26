@@ -1,0 +1,14 @@
+<div *ngIf="teams.length > 0 && !rated" class="p-2 row m-0 bg-dark text-light mb-2">
+    <h4 class="col-12">Rate a team:</h4>
+    <div class="px-3 col-md-6">
+        <label for="team" class="mt-2">Choose a team:</label>
+        <select name="team" [(ngModel)]="team" class="form-control" required>
+          <option *ngFor="let team of teams" value="{{team.name}}">{{team.name}} Sprint {{sprintNum}}</option>
+        </select>
+    </div>
+    <div class="px-3 col-md-6">
+        <label for="rating" class="mt-2">Choose a rating:</label>
+        <input class="form-control" type="number" name="rating" id="rating" max="5" min="1" step="1" [(ngModel)]="rating">
+    </div>
+    <button class="btn btn-primary my-2 mx-3" (click)="db.rateTeam(team, rating); rate()">Submit</button>
+</div>

@@ -11,7 +11,8 @@ export class PoCommentComponent implements OnInit {
   @Input()
   team;
 
-  constructor(protected readonly db: DatabaseService) { }
+  constructor(protected readonly db: DatabaseService) {
+  }
 
   ngOnInit() {
     this.db.getLatestPoComment(this.team);

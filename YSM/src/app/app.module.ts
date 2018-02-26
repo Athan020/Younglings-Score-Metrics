@@ -24,6 +24,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { TeamMemberComponent } from './components/dashboard/team-member/team-member.component';
 import { TeamLeaderComponent } from './components/dashboard/team-leader/team-leader.component';
 import { ManagerComponent } from './components/dashboard/manager/manager.component';
+import { RateTeamsComponent } from './components/rate-teams/rate-teams.component';
+
 import { AmChartsModule } from '@amcharts/amcharts3-angular';
 import { BurndownChartComponent } from './components/burndown-chart/burndown-chart.component';
 
@@ -50,8 +52,9 @@ export const firebaseConfig = {
     LeaderboardComponent,
     TeamRatingsComponent,
     UserRatingsComponent,
-    BurndownChartComponent,
-    PoCommentComponent
+    PoCommentComponent,
+    RateTeamsComponent,
+    BurndownChartComponent
   ],
   imports: [
     BrowserModule,

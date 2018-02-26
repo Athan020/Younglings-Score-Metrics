@@ -1,6 +1,6 @@
-import { AngularFireAuth } from 'angularfire2/Auth/auth';
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../../services/database/database.service';
+import { AuthenticationService } from '../../services/authentication/authentication.service';
 import { Comment } from '@angular/compiler';
 
 @Component({
@@ -15,20 +15,19 @@ export class ReviewComponent implements OnInit {
   happiness: number;
   comment: String;
 
-  constructor(private db: DatabaseService, private afAuth: AngularFireAuth) {
-    // db.getPoTeam(afAuth.auth.currentUser.uid);
-  }
+  constructor(private db: DatabaseService) {}
 
-  ngOnInit() {
-    // console.log(this.db.poTeam + '-' + this.db.teamHighestSprint, 'Total Sprints');
-  }
+  ngOnInit() {}
+
+  // getX(x) {
+  //   this.l = this.l + x / 4;
+  //   console.log(this.l + 'X here');
+  // }
 
   commentTest() {
     console.log(this.comment);
-    const tot =
-      this.teamRating + this.happiness + this.presentation + this.rateWork;
+    const tot = this.teamRating + this.happiness + this.presentation + this.rateWork;
     console.log(tot);
-    this.db.poComments(this.comment, this.afAuth.auth.currentUser.uid);
     this.db.updateRatings(tot / 4, tot);
   }
 }

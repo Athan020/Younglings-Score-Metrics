@@ -1,21 +1,22 @@
-<!-- <h2>{{team.name}} Dashboard</h2> -->
-<div class="team-member">
-    <label for="name" type="text" value="MemberName">Member name:{{TeamMember.name}}</label>
-    <app-user-ratings *ngIf="TeamMember.user === this.afAuth.auth.currentUser.uid" [userData]="TeamMember"></app-user-ratings>
-    <app-team-ratings *ngIf="TeamMember.team === team.name" [teamData]="team"></app-team-ratings>
-    <app-leaderboard></app-leaderboard>
-</div>
+<div class="container-fluid m-0">
+    <h3 *ngIf="TeamMember">{{TeamMember.team}}</h3>
 
-<!-- <form action="rating"> -->
-<!-- <input [(ngModel)]="POsHappiness" class="title" type="text" name="PO's" placeholder="PO's happiness">
-    <br> -->
-<!-- <input [(ngModel)]="TeamAverage" class="title" type="text" name="average's team" placeholder="Team average">
-    <br> -->
-<!-- <h2>{{TeamLeader.rating}}</h2> -->
-<!-- <input [(ngModel)]="Scoreboard" class="title" type="text" name="SeeScoreboard" placeholder="Scoreboard">
-    <br> -->
-<!-- <input [(ngModel)]="POsComments" class="title" type="text" name="PO'sComments" placeholder="PO's comments">
-    <br> -->
-<!-- <input [(ngModel)]="TeamsVelocity" class="title" type="text" name="Velocity" placeholder="Teams velocity">
-    <br> -->
-<!-- </form> -->
+    <div class="row m-0">
+        <div class="col-md-6">
+            <h2>{{this.afAuth.auth.currentUser.displayName}}'s Dashboard</h2>
+        </div>
+    </div>
+
+    <div class="row m-0">
+        <div class="col-md-6">
+            <div class="mb-2" *ngFor=" let team of db.teams | async">
+                <app-team-ratings *ngIf="TeamMember.team === team.name" [teamData]="team"></app-team-ratings>
+                <app-po-comment *ngIf="TeamMember.team === team.name" [team]="team.name"></app-po-comment>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <app-rate-teams></app-rate-teams>
+            <app-leaderboard></app-leaderboard>
+        </div>
+    </div>
+</div>

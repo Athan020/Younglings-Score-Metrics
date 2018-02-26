@@ -76,4 +76,8 @@ export class AuthenticationService {
         return true;
     }
 
+    getUID() {
+        return this.afAuth.auth.currentUser.uid;
+    }
+
 }

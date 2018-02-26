@@ -13,12 +13,23 @@ export class TeamRatingsComponent implements OnInit {
   teamData;
 
   average;
+  previousRating;
 
   constructor(protected db: DatabaseService) {
   }
 
   ngOnInit() {
-    this.average = Math.round((this.teamData.rating / this.teamData.totalSprints) * 10) / 10;
+    this.db.sprints.subscribe(response => {
+      const sprintId = this.teamData.name + '-' + this.teamData.totalSprints;
+      const prevSprintId = this.teamData.name + '-' + (this.teamData.totalSprints - 1);
+      response.map(element => {
+        if (element.id === prevSprintId) {
+          this.previousRating = Math.round((element.score / element.ratingsReceived) * 10) / 10;
+        } else if (element.id === sprintId) {
+          this.average = Math.round((element.score / element.ratingsReceived) * 10) / 10;
+        }
+      });
+    });
   }
 
 }
