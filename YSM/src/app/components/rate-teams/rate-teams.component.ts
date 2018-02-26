@@ -17,15 +17,18 @@ export class RateTeamsComponent implements OnInit {
   sprintNum: number;
 
   constructor(protected readonly db: DatabaseService, private auth: AuthenticationService) {
-    db.users.subscribe(r => {
-      db.teams.subscribe(response => {
-        db.sprints.subscribe(res => {
+
+  }
+
+  ngOnInit() {
+    this.db.users.subscribe(r => {
+      this.db.teams.subscribe(response => {
+        this.db.sprints.subscribe(res => {
           this.teams = response.filter((team) => {
             let flag = false;
             r.map(el => {
-              if (el.user === auth.getUID()) {
+              if (el.user === this.auth.getUID()) {
                 const includesTeam = el.teamsRated.includes(team.name);
-                console.log(includesTeam);
                 if (includesTeam) {
                   res.map(e => {
                     if (e.id.includes(team.name) && e.open) {
@@ -43,10 +46,7 @@ export class RateTeamsComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
-
-  rate () {
+  rate() {
     this.rated = true;
   }
 

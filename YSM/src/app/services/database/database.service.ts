@@ -37,6 +37,10 @@ export class DatabaseService {
         if (sprintNum > 1) {
             this.afStore.collection('sprints').doc(teamName + '-' + (sprintNum - 1)).update({ 'open': true });
         }
+        if (sprintNum > 2) {
+            this.afStore.collection('sprints').doc(teamName + '-' + (sprintNum - 2)).update({ 'open': false });
+        }
+        this.teamHighestSprint++;
     }
 
     createNewUser(uid: string, role: string, team: string, newTeam: boolean, name: string) {
@@ -261,23 +265,31 @@ export class DatabaseService {
     getTeamSprint(teamName) {
         const teams = this.afStore.collection('teams', ref => ref.orderBy('totalSprints', 'desc')).valueChanges();
         this.teamHighestSprint = 0;
-        teams.subscribe(response => {
+        const sub = teams.subscribe(response => {
             response.map(element => {
-                if (element['name'] === teamName && element['totalSprints'] > this.teamHighestSprint) {
+                if (element['name'] === teamName) {
                     this.teamHighestSprint = element['totalSprints'];
-                    // console.log(this.teamHighestSprint)
+                    sub.unsubscribe();
                 }
             });
         });
     }
 
     getLatestPoComment(team: string) {
-        this.getTeamSprint(team);
-        const sprint = this.afStore.collection('sprints').doc(team + '-' + this.teamHighestSprint).valueChanges();
-        sprint.subscribe(response => {
-            if (response['poComment'] !== null) {
-                this.poComment = response['poComment'];
-            }
+        const teams = this.afStore.collection('teams', ref => ref.orderBy('totalSprints', 'desc')).valueChanges();
+        this.teamHighestSprint = 0;
+        teams.subscribe(response => {
+            response.map(element => {
+                if (element['name'] === team) {
+                    this.teamHighestSprint = element['totalSprints'];
+                    const sprint = this.afStore.collection('sprints').doc(team + '-' + this.teamHighestSprint).valueChanges();
+                    sprint.subscribe(res => {
+                        if (res['poComment'] !== null) {
+                            this.poComment = res['poComment'];
+                        }
+                    });
+                }
+            });
         });
     }
 
@@ -360,8 +372,8 @@ export class DatabaseService {
 
     }
 
-    getLatestSprintObject(teamName) {
-        const teamId = teamName + '-' + (this.teamHighestSprint + 1);
+    getLatestSprintObject(teamName, sprints: number) {
+        const teamId = teamName + '-' + (sprints + 1);
         return this.afStore.collection('sprints').doc(teamId).valueChanges();
     }
 
