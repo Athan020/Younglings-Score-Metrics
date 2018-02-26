@@ -15,6 +15,7 @@ export class BurndownChartComponent implements OnInit, OnDestroy {
   private chart: AmChart;
   currentDate: Date = new Date();
   currentSprint;
+  sprints;
 
   @Input() pointsBurned: number;
 
@@ -25,27 +26,32 @@ export class BurndownChartComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.db.users.subscribe(response =>
+    this.db.users.subscribe(response => {
       response.map(element => {
         if (element.user === this.afAuth.auth.currentUser.uid) {
-          this.teamName = element.team;
-
-          this.db.getLatestSprintObject(this.teamName).subscribe(res => {
-            this.currentSprint = res;
-            this.burnedDownArray = this.currentSprint.burnDownChart;
-            this.displayChart(this.currentSprint.burnDownChart);
-            console.log(this.currentSprint.burnDownChart);
-          }
-          );
+          this.db.teams.subscribe(res => {
+            res.map(e => {
+              if (e.name === element.team) {
+                this.sprints = e.totalSprints;
+                this.db.getLatestSprintObject(e.name, e.totalSprints).subscribe(r => {
+                  this.currentSprint = r;
+                  this.burnedDownArray = this.currentSprint.burnDownChart;
+                  this.displayChart(this.currentSprint.burnDownChart);
+                });
+              }
+            });
+          });
+          // this.teamName = element.team;
+          // this.db.getTeamSprint(this.teamName);
+          // this.db.getLatestSprintObject(this.teamName).subscribe(res => {
+          //   this.currentSprint = res;
+          //   this.burnedDownArray = this.currentSprint.burnDownChart;
+          //   this.displayChart(this.currentSprint.burnDownChart);
+          // });
         }
-
-      }
-      )
-    );
-
-
-    this.db.getTeamSprint(this.teamName);
-
+      });
+    });
+    // this.db.getTeamSprint(this.teamName);
   }
 
 
@@ -105,7 +111,7 @@ export class BurndownChartComponent implements OnInit, OnDestroy {
         {
           'id': 'Title-1',
           'size': 15,
-          'text': 'Sprint 1 Burndown Chart'
+          'text': 'Sprint ' + (this.sprints + 1) + ' Burndown Chart'
         }
       ],
       'dataProvider': chartArray

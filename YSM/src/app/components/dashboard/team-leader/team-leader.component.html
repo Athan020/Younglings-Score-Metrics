@@ -17,11 +17,7 @@
                 <app-po-comment *ngIf="teamLeader.team === team.name" [team]="team.name"></app-po-comment>
             </div>
             <app-leaderboard></app-leaderboard>
-            <div *ngFor="let sprint of db.sprints | async">
-                <div *ngIf="sprint.id.split('-')[1] == (db.teamHighestSprint+1)">
-                    <app-burndown-chart *ngIf="!sprint.open"></app-burndown-chart>
-                </div>
-            </div>
+            <app-burndown-chart></app-burndown-chart>
         </div>
 
         <div class="col-md-6">
@@ -45,8 +41,8 @@
                 </div>
             </div> -->
 
-            <div class="p-3 bg-dark">
-                <h4 class="text-white"> Sprint {{db.teamHighestSprint+1}}</h4>
+            <div class="p-3 bg-dark text-white">
+                <h4 class="text-white"> Sprint {{db.teamHighestSprint+1}}{{newSprintText}}</h4>
                 <label class="text-white" for="">Sprint Points</label>
                 <input type="number" [(ngModel)]="sprintPoints" min="0" class="form-control mb-3">
 
