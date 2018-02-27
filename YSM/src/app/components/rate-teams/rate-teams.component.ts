@@ -27,11 +27,14 @@ export class RateTeamsComponent implements OnInit {
           this.teams = response.filter((team) => {
             let flag = false;
             r.map(el => {
-              if (el.user === this.auth.getUID()) {
-                const includesTeam = el.teamsRated.includes(team.name);
-                if (includesTeam) {
+              if (el.user === this.auth.getUID() && el.team !== team.name) {
+                let includesTeam = false;
+                if (el.teamsRated !== undefined) {
+                  includesTeam = el.teamsRated.includes(team.name);
+                }
+                if (!includesTeam) {
                   res.map(e => {
-                    if (e.id.includes(team.name) && e.open) {
+                    if (e.id.includes(team.name) && !e.open) {
                       this.sprintNum = e.id.split('-')[1];
                       flag = true;
                     }

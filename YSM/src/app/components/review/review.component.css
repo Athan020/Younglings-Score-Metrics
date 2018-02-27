@@ -1,5 +1,5 @@
 .questionnaire {
-    margin-top: 20%;
+    margin-top: 5%;
     width: 100%;
 }
 
@@ -37,7 +37,7 @@ h1 {
 
 .rating>label:before {
     margin: 5px;
-    font-size: 1.25em;
+    font-size: 2.0em;
     font-family: FontAwesome;
     display: inline-block;
     content: "\f005";
@@ -86,4 +86,8 @@ h1 {
 
 .button {
     background-color: #DCDCDC;
+}
+
+.headerLabel {
+    font-size: 30px;
 }
